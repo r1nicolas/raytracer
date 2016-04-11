@@ -1,0 +1,42 @@
+#####################################################################
+#                     COMMENT PART そのボケ！                       #
+# > camera pos.x pos.y pos.z u.x u.y u.z size rot                   #
+# > spot x y z                                                      #
+# > cylinder rot.x rot.y rot.z trans.x trans.y trans.z radius color #
+# > sphere x y z r color                                            #
+# > plane a b c d color                                             #
+# > cone rot.x rot.y rot.z apex.x apex.y apex.z angle color         #
+#####################################################################
+
+> camera 4 4 1 -4 -4 -1 4 0
+#> plane 1 0 0 2 444444
+> sphere 1 1 1 0.1 FFFFFF
+> sphere 1 1 0 0.1 FFFF7F
+> sphere 1 1 -1 0.1 FFFF00
+> sphere 1 0 1 0.1 FF7FFF
+> sphere 1 0 0 0.1 FF7F7F
+> sphere 1 0 -1 0.1 FF7F00
+> sphere 1 -1 1 0.1 FF00FF
+> sphere 1 -1 0 0.1 FF007F
+> sphere 1 -1 -1 0.1 FF0000
+> sphere 0 1 1 0.1 7FFFFF
+> sphere 0 1 0 0.1 7FFF7F
+> sphere 0 1 -1 0.1 7FFF00
+> sphere 0 0 1 0.1 7F7FFF
+> sphere 0 0 0 0.1 7F7F7F
+> sphere 0 0 -1 0.1 7F7F00
+> sphere 0 -1 1 0.1 7F00FF
+> sphere 0 -1 0 0.1 7F007F
+> sphere 0 -1 -1 0.1 7F0000
+> sphere -1 1 1 0.1 00FFFF
+> sphere -1 1 0 0.1 00FF7F
+> sphere -1 1 -1 0.1 00FF00
+> sphere -1 0 1 0.1 007FFF
+> sphere -1 0 0 0.1 007F7F
+> sphere -1 0 -1 0.1 007F00
+> sphere -1 -1 1 0.1 0000FF
+> sphere -1 -1 0 0.1 00007F
+> sphere -1 -1 -1 0.1 000000
+> spot 4 4 2
+
+####################################################################
