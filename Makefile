@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/11 18:46:20 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/04/12 17:49:15 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -44,10 +44,11 @@ SRC =	main.c \
 		color.c
 #		res_equ_thrd.c 
 
+MLX = libmlx_macos
 
-IFLAGS =  -I includes -I libft -I libmlx
+IFLAGS =  -I includes -I libft -I $(MLX)
 
-LDFLAGS = -L libft -lft -L libmlx -lmlx -framework OpenGL -framework AppKit
+LDFLAGS = -L libft -lft -L $(MLX) -lmlx -framework OpenGL -framework AppKit
 
 OBJ = $(SRC:%.c=%.o)
 
@@ -59,7 +60,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ_LIST)
 	$(MAKE) -C libft
-	$(MAKE) -C libmlx
+	$(MAKE) -C $(MLX)
 	$(CC) $(OBJ_LIST) -o $(NAME) $(LDFLAGS)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c
@@ -67,12 +68,12 @@ $(OBJDIR)%.o: $(SRCDIR)%.c
 
 clean:
 	$(MAKE) -C libft clean
-	$(MAKE) -C libmlx clean
+	$(MAKE) -C $(MLX) clean
 	/bin/rm -fr $(OBJ_LIST)
 
 fclean: clean
 	/bin/rm -f $(NAME)
-	$(MAKE) -C libft fclean
+	/bin/rm -f libft/libft.a
 
 re: fclean all
 
