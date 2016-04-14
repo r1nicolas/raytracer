@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2014/03/27 17:42:02 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/14 19:19:26 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			get_color_inter(t_inter inter, t_objlist *lst);
 void		set_camera(t_env *env);
 void		start_mlx(void);
 void		get_scene(char *path);
-void		put_error(char *str);
+void		put_error(char const *str);
 void		push_spot(char **line);
 void		push_cam(char **line);
 void		push_cone(char **line);

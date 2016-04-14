@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/12 17:49:15 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/04/14 19:15:42 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -46,9 +46,9 @@ SRC =	main.c \
 
 MLX = libmlx_macos
 
-IFLAGS =  -I includes -I libft -I $(MLX)
+IFLAGS =  -I includes -I libft -I $(MLX) -I ~/.brew/include/SDL2
 
-LDFLAGS = -L libft -lft -L $(MLX) -lmlx -framework OpenGL -framework AppKit
+LDFLAGS = -L libft -lft -L $(MLX) -lmlx -framework OpenGL -framework AppKit -L ~/.brew/lib -lSDL2
 
 OBJ = $(SRC:%.c=%.o)
 

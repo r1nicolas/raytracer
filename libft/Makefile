@@ -6,13 +6,13 @@
 #    By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/19 14:54:39 by hmichals          #+#    #+#              #
-#    Updated: 2014/03/06 19:31:41 by hmichals         ###   ########.fr        #
+#    Updated: 2016/04/12 18:02:52 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = libft.a
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS =
 SRC = ft_atoi.c ft_isalpha.c ft_isdigit.c ft_memcpy.c  ft_putstr.c ft_strcmp.c \
 ft_strdup.c  ft_strncat.c ft_strncpy.c ft_tolower.c ft_isalnum.c ft_isascii.c \
