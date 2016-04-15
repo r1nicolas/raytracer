@@ -6,15 +6,15 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 16:36:53 by hmichals          #+#    #+#             */
-/*   Updated: 2014/03/27 17:24:26 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:17:13 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
-#include <libft.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct s_scene	g_scene;
 
@@ -38,12 +38,12 @@ static void		is_valid(char **line)
 	instance_func(tab);
 	if (line != NULL)
 	{
-		if (ft_strcmp(line[0], ">") != 0)
+		if (strcmp(line[0], ">") != 0)
 			put_error("format error\n");
 		i = 0;
 		while (i < 7 && line[1])
 		{
-			if (!ft_strcmp(tab[i], line[1]))
+			if (!strcmp(tab[i], line[1]))
 				return ;
 			i++;
 		}
@@ -62,7 +62,7 @@ static void		get_params(char **line)
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strcmp(tab[i], line[1]) == 0)
+		if (strcmp(tab[i], line[1]) == 0)
 			tab_f[i](line);
 		i++;
 	}

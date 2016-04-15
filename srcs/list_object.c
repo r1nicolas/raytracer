@@ -6,13 +6,12 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 18:42:37 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 19:14:27 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:38:50 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <stdlib.h>
-#include <libft.h>
 
 int			get_color(t_ray ray, t_scene sc)
 {

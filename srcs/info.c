@@ -6,13 +6,12 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/27 15:05:41 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 17:30:59 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:08:22 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <stdlib.h>
-#include <libft.h>
 
 void		get_info(t_inter *pt, t_light *light, t_vec inter)
 {

@@ -6,13 +6,12 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/02 17:44:51 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 17:07:34 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:37:43 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <stdlib.h>
-#include <libft.h>
 
 t_vec		get_inter(t_ray ray, double t)
 {

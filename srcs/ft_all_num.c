@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_all_num.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2013/11/19 14:18:20 by hmichals          #+#    #+#             */
-/*   Updated: 2014/03/27 17:31:30 by hmichals         ###   ########.fr       */
+/*   Created: 2014/02/15 19:44:05 by hmichals          #+#    #+#             */
+/*   Updated: 2016/04/15 18:48:29 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	*ft_memcpy(void *s1, const void *s2, size_t n)
+int		ft_all_num(char *str)
 {
-	char	*s1_save;
-	char	*s2_save;
+	int		point;
 
-	if ((s1) && (s2) && (n))
+	point = 0;
+	if (!str)
+		return (0);
+	if (*str == '-')
+		str++;
+	while (*str)
 	{
-		s2_save = (char*)s2;
-		s1_save = (char*)s1;
-		while (n--)
+		if (*str == '.' && *(str + 1))
 		{
-			*s1_save = *s2_save++;
-			s1_save++;
+			point++;
+			str++;
 		}
+		if ((*str < '0' || *str > '9') || point > 1)
+			return (0);
+		str++;
 	}
-	return (s1);
+	return (1);
 }

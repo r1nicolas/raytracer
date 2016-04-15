@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/14 19:19:26 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:32:15 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void		instance_funct2(t_func2 *funct);
 void		instance_funct(t_func *funct);
 void		instance_funcf(t_parse *tabf);
 void		instance_func(char **tab);
-void		change_image(t_env *env, int x, int y, int rgb);
 int			shadow(t_vec inter, t_objlist *lst, t_info *info);
 int			count_spot(t_info *info);
 void		free_info(t_inter *pt);
@@ -37,7 +36,6 @@ void		int_quad(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_plane(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_cylinder(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_cone(t_inter *pt, void *e, t_ray ray, t_light *light);
-double		*res_equ_thrd(double a, double b, double c, double d);
 void		push_quad(char **line);
 int			sh_quad(void *e, t_ray ray, double dist);
 double		res_equ_scnd(double a, double b, double c);
@@ -46,8 +44,6 @@ int			sh_plane(void *e, t_ray ray, double dist);
 int			sh_cylinder(void *e, t_ray ray, double dist);
 int			sh_cone(void *e, t_ray ray, double dist);
 int			get_color_inter(t_inter inter, t_objlist *lst);
-void		set_camera(t_env *env);
-void		start_mlx(void);
 void		get_scene(char *path);
 void		put_error(char const *str);
 void		push_spot(char **line);
@@ -72,8 +68,6 @@ void		get_matrice(double **ret, double angle, t_vec ort);
 double		**get_rot_obj(t_vec u);
 t_cam		get_cam(t_vec pos, t_vec u, double size, double rot);
 t_vec		unit_vect(double a, double b, double c);
-int			key_hook(int keycode, t_env *env);
-int			expose_hook(t_env *env);
 void		apply_trans_inv(t_vec x, t_vec *y);
 void		apply_trans(t_vec x, t_vec *y);
 double		norm(t_vec a);
@@ -83,5 +77,8 @@ double		**inv_mat(double **rot);
 void		apply_rot(double **rot, t_vec *pt);
 int			color_add(int col1, int col2);
 int			color_mult(int color, double fac);
+char		**ft_strsplit(char * line, char c);
+int			get_next_line(int fd, char **line);
+int			ft_all_num(char *line);
 
 #endif

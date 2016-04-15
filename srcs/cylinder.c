@@ -6,14 +6,13 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/02 17:48:13 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 17:39:31 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:37:59 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <math.h>
 #include <stdlib.h>
-#include <libft.h>
 
 static double	init_equation(t_ray ray, t_cylinder cy)
 {

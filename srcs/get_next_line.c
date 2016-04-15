@@ -6,11 +6,24 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/01/26 22:51:33 by hmichals          #+#    #+#             */
-/*   Updated: 2014/01/26 22:51:36 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:48:02 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include			"libft.h"
+#include <unistd.h>
+#include <stdlib.h>
+
+#define BUFF_SIZE 512
+#define DELIM_CHAR '\n'
+
+typedef struct		s_buff
+{
+	int				fd;
+	ssize_t			size;
+	ssize_t			i;
+	char			buff[BUFF_SIZE];
+	struct s_buff	*next;
+}					t_buff;
 
 static t_buff		*get_buff(t_buff **head_buff, int const fd)
 {

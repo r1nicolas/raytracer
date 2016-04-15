@@ -6,11 +6,13 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/11/21 20:30:45 by hmichals          #+#    #+#             */
-/*   Updated: 2014/03/27 17:34:20 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:44:04 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
 static char	**sub_first_alloc(char const *s, char c, size_t *x)
 {
@@ -32,7 +34,8 @@ static char	**sub_first_alloc(char const *s, char c, size_t *x)
 		if (bol == 1)
 			count++;
 	}
-	result = (char**)ft_memalloc(sizeof(char*) * (count + 1));
+	result = (char**)malloc(sizeof(char*) * (count + 1));
+	memset(result, 0, sizeof(char*) * (count + 1));
 	*x = count;
 	return (result);
 }
@@ -55,7 +58,8 @@ static void	sub_sec_alloc(char const *s, char **result, char c, size_t size)
 		}
 		while (*s == c)
 			s++;
-		result[i] = (char*)ft_memalloc(count + 1);
+		result[i] = (char*)malloc(count + 1);
+		memset(result[i], 0, count + 1);
 		i++;
 	}
 }

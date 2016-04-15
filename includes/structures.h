@@ -6,7 +6,7 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/27 17:16:14 by hmichals          #+#    #+#             */
-/*   Updated: 2014/03/27 17:19:16 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:02:42 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,6 @@ typedef struct			s_cam
 	double				size;
 }						t_cam;
 
-typedef struct			s_env
-{
-	void				*mlx;
-	void				*win;
-	void				*img;
-}						t_env;
-
 typedef struct			s_info
 {
 	t_ray				light;
@@ -108,15 +101,6 @@ typedef struct			s_inter
 	t_vec				inter;
 	int					color;
 }						t_inter;
-
-typedef struct			s_img
-{
-	int					bits;
-	int					line_size;
-	int					endian;
-	char				*add;
-	t_env				*env;
-}						t_img;
 
 typedef struct			s_light
 {

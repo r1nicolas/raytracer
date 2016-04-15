@@ -6,13 +6,12 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 18:35:19 by rnicolas          #+#    #+#             */
-/*   Updated: 2014/03/27 16:18:38 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:40:27 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <math.h>
-#include <libft.h>
 
 int		color_mult(int color, double fac)
 {

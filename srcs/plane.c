@@ -6,14 +6,13 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 22:46:19 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 16:34:23 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:38:24 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <raytracer.h>
 #include <stdlib.h>
 #include <math.h>
-#include <libft.h>
 
 static double	get_dist(t_ray ray, t_plane plane)
 {

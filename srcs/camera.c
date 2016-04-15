@@ -6,11 +6,10 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 16:20:12 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 17:21:16 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/15 18:39:42 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
 #include <raytracer.h>
 #include <stdlib.h>
 
@@ -60,24 +59,4 @@ t_ray		get_ray(int x, int y, t_cam cam)
 	r.point.z = r.point.z + width * cam.right.z * (x - WINCOL / 2)
 		+ height * cam.down.z * (y - WINROW / 2);
 	return (r);
-}
-
-void		set_camera(t_env *env)
-{
-	int		i;
-	int		j;
-	t_ray	ray;
-
-	i = 0;
-	while (i < WINROW)
-	{
-		j = 0;
-		while (j < WINCOL)
-		{
-			ray = get_ray(j, i, g_scene.cam);
-			change_image(env, j, i, get_color(ray, g_scene));
-			j++;
-		}
-		i++;
-	}
 }
