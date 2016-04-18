@@ -37,15 +37,15 @@ void		change_frame(t_ray *ray, double **rot, t_vec trans)
 	apply_rot(rot, &(ray->dir));
 }
 
-int			shadow(t_vec inter, t_objlist *lst, t_info *info)
+int			shadow(t_vec inter, t_object_list *lst, t_ray_list *ray_list)
 {
 	t_func2		funct[5];
 
 	instance_funct2(funct);
 	while (lst)
 	{
-		if (funct[lst->obj](lst->e, info->light,
-			dist_point(inter, info->light.point)))
+		if (funct[lst->obj](lst->e, ray_list->light,
+			dist_point(inter, ray_list->light.point)))
 			return (0);
 		lst = lst->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/15 18:32:15 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/18 17:55:18 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,24 @@
 ** function prototypes
 */
 
+/*
+** camera.c
+*/
+
+t_cam		new_cam(t_vec pos, t_vec u, double size, double rot);
+t_ray		new_ray(int x, int y, t_cam cam);
+
+/*
+**
+*/
+
 void		op_inv(t_vec trans, double **rot, t_vec *normal, t_vec *inter);
 void		instance_funct2(t_func2 *funct);
 void		instance_funct(t_func *funct);
 void		instance_funcf(t_parse *tabf);
 void		instance_func(char **tab);
-int			shadow(t_vec inter, t_objlist *lst, t_info *info);
-int			count_spot(t_info *info);
+int			shadow(t_vec inter, t_object_list *lst, t_ray_list *ray_list);
+int			count_spot(t_ray_list *ray_list);
 void		free_info(t_inter *pt);
 void		get_info(t_inter *pt, t_light *light, t_vec inter);
 void		int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light);
@@ -43,7 +54,7 @@ int			sh_sphere(void *e, t_ray ray, double dist);
 int			sh_plane(void *e, t_ray ray, double dist);
 int			sh_cylinder(void *e, t_ray ray, double dist);
 int			sh_cone(void *e, t_ray ray, double dist);
-int			get_color_inter(t_inter inter, t_objlist *lst);
+int			get_color_inter(t_inter inter, t_object_list *lst);
 void		get_scene(char *path);
 void		put_error(char const *str);
 void		push_spot(char **line);
@@ -61,12 +72,10 @@ t_vec		mult_scalar(t_vec u, double scalar);
 t_vec		init_point(double x, double y, double z);
 double		dist_point(t_vec u, t_vec v);
 int			get_color(t_ray ray, t_scene sc);
-t_ray		get_ray(int x, int y, t_cam cam);
 double		**get_rot(double angle, t_vec ort);
 void		init_ret(double ***ret);
 void		get_matrice(double **ret, double angle, t_vec ort);
 double		**get_rot_obj(t_vec u);
-t_cam		get_cam(t_vec pos, t_vec u, double size, double rot);
 t_vec		unit_vect(double a, double b, double c);
 void		apply_trans_inv(t_vec x, t_vec *y);
 void		apply_trans(t_vec x, t_vec *y);
@@ -80,5 +89,6 @@ int			color_mult(int color, double fac);
 char		**ft_strsplit(char * line, char c);
 int			get_next_line(int fd, char **line);
 int			ft_all_num(char *line);
+void		free_matrix(double **mat);
 
 #endif

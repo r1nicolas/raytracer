@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/15 18:18:23 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/18 17:53:18 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		main(int ac, char **av)
 		j = 0;
 		while (j < WINROW)
 		{
-			ray = get_ray(i, j, g_scene.cam);
+			ray = new_ray(i, j, g_scene.cam);
 			pixels[j * WINCOL + i] = get_color(ray, g_scene);
 			j++;
 		}

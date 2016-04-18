@@ -6,7 +6,7 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 20:32:31 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/15 18:25:37 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/18 17:54:07 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			push_cam(char **line)
 	test_object(line, 10, "camera");
 	pos = init_point(atof(line[2]), atof(line[3]), atof(line[4]));
 	u = unit_vect(atof(line[5]), atof(line[6]), atof(line[7]));
-	g_scene.cam = get_cam(pos, u, atof(line[8]), atof(line[9]));
+	g_scene.cam = new_cam(pos, u, atof(line[8]), atof(line[9]));
 	i = 0;
 	while (i < 10)
 		free(line[i++]);
@@ -47,11 +47,11 @@ void			push_spot(char **line)
 
 void			push_quad(char **line)
 {
-	t_quad		*elem;
-	t_objlist	*e;
-	int			i;
+	t_quad			*elem;
+	t_object_list	*e;
+	int				i;
 
-	e = (t_objlist*)malloc(sizeof(t_objlist));
+	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 13, "quadric");
 	elem = (t_quad*)malloc(sizeof(t_quad));
 	elem->a = atof(line[2]);
@@ -70,6 +70,6 @@ void			push_quad(char **line)
 		free(line[i++]);
 	e->obj = quad;
 	e->e = elem;
-	e->next = g_scene.lst;
-	g_scene.lst = e;
+	e->next = g_scene.list;
+	g_scene.list = e;
 }

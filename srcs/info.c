@@ -15,33 +15,33 @@
 
 void		get_info(t_inter *pt, t_light *light, t_vec inter)
 {
-	t_info		*info;
+	t_ray_list		*info;
 
 	while (light)
 	{
-		info = malloc(sizeof(t_info));
+		info = malloc(sizeof(t_ray_list));
 		info->light.point = light->spot;
 		info->light.dir = unit_vect(inter.x - light->spot.x, inter.y
 			- light->spot.y, inter.z - light->spot.z);
-		info->next = pt->info;
-		pt->info = info;
+		info->next = pt->light_ray_list;
+		pt->light_ray_list = info;
 		light = light->next;
 	}
 }
 
 void		free_info(t_inter *pt)
 {
-	t_info	*info;
+	t_ray_list	*info;
 
-	while (pt->info)
+	while (pt->light_ray_list)
 	{
-		info = pt->info->next;
-		free(pt->info);
-		pt->info = info;
+		info = pt->light_ray_list->next;
+		free(pt->light_ray_list);
+		pt->light_ray_list = info;
 	}
 }
 
-int			count_spot(t_info *info)
+int			count_spot(t_ray_list *info)
 {
 	int		i;
 

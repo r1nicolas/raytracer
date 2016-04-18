@@ -15,25 +15,25 @@
 
 int			get_color(t_ray ray, t_scene sc)
 {
-	t_inter		inter;
-	t_objlist	*lst;
-	int			color;
-	t_func		funct[5];
+	t_inter			inter;
+	t_object_list	*list;
+	int				color;
+	t_func			funct[5];
 
 	instance_funct(funct);
-	lst = sc.lst;
+	list = sc.list;
 	inter.dist = NULL;
-	inter.info = NULL;
-	while (lst)
+	inter.light_ray_list = NULL;
+	while (list)
 	{
-		funct[lst->obj](&inter, lst->e, ray, sc.light);
-		lst = lst->next;
+		funct[list->obj](&inter, list->e, ray, sc.light);
+		list = list->next;
 	}
 	if (inter.dist == NULL)
 		return (0);
 	else
 	{
-		color = get_color_inter(inter, sc.lst);
+		color = get_color_inter(inter, sc.list);
 		free(inter.dist);
 		free_info(&inter);
 		return (color);

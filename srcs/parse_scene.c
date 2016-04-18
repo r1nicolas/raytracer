@@ -6,7 +6,7 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 16:36:53 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/15 18:17:13 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/18 17:53:48 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static void		init_default(void)
 
 	pos = init_point(1, 1, 1);
 	u = unit_vect(-1, -1, -1);
-	g_scene.cam = get_cam(pos, u, 1, 0);
-	g_scene.lst = NULL;
+	g_scene.cam = new_cam(pos, u, 1, 0);
+	g_scene.list = NULL;
 	g_scene.light = NULL;
 }
 
