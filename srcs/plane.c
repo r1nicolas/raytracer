@@ -30,7 +30,7 @@ void			int_plane(t_inter *pt, void *e, t_ray ray, t_light *light)
 {
 	t_plane		plane;
 	double		t;
-	t_vec		inter;
+	t_vec		pos;
 
 	plane = *((t_plane *)e);
 	t = get_dist(ray, plane);
@@ -43,15 +43,15 @@ void			int_plane(t_inter *pt, void *e, t_ray ray, t_light *light)
 			pt->dist = malloc(sizeof(double));
 		free_info(pt);
 		*(pt->dist) = t;
-		inter = init_point(ray.point.x + t * ray.dir.x,
+		pos = init_point(ray.point.x + t * ray.dir.x,
 			ray.point.y + t * ray.dir.y, ray.point.z + t * ray.dir.z);
 		if (scalar_prod(pt->normal, ray.dir) > 0)
 			pt->normal = mult_scalar(pt->normal, -1);
-		get_info(pt, light, inter);
+		get_info(pt, light, pos);
 		pt->refl = mult_scalar(vect_add(ray.dir, mult_scalar(pt->normal,
 			-2 * (scalar_prod(pt->normal, ray.dir)))), -1);
 		pt->color = plane.color;
-		pt->inter = inter;
+		pt->pos = pos;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/27 17:16:14 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/18 19:31:22 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/19 17:07:19 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct				s_inter
 	t_ray_list				*light_ray_list;
 	t_vec					normal;
 	t_vec					refl;
-	t_vec					inter;
+	t_vec					pos;
 	int						color;
 }							t_inter;
 

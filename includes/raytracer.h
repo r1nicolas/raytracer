@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/18 17:55:18 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:18:34 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,22 @@
 ** camera.c
 */
 
-t_cam		new_cam(t_vec pos, t_vec u, double size, double rot);
+t_cam		new_cam(t_vec pos, t_vec dir, double size, double rot);
 t_ray		new_ray(int x, int y, t_cam cam);
 
 /*
-**
+** color.c
 */
+
+int			get_color_inter(t_inter inter, t_object_list *list);
+
+/*
+** cone.c
+*/
+
+void		cone_inter(t_inter *inter, void *obj, t_ray ray, t_light *light);
+int			cone_shadow(void *obj, t_ray ray, double light_dist);
+
 
 void		op_inv(t_vec trans, double **rot, t_vec *normal, t_vec *inter);
 void		instance_funct2(t_func2 *funct);
@@ -46,15 +56,12 @@ void		int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_quad(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_plane(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		int_cylinder(t_inter *pt, void *e, t_ray ray, t_light *light);
-void		int_cone(t_inter *pt, void *e, t_ray ray, t_light *light);
 void		push_quad(char **line);
 int			sh_quad(void *e, t_ray ray, double dist);
 double		res_equ_scnd(double a, double b, double c);
 int			sh_sphere(void *e, t_ray ray, double dist);
 int			sh_plane(void *e, t_ray ray, double dist);
 int			sh_cylinder(void *e, t_ray ray, double dist);
-int			sh_cone(void *e, t_ray ray, double dist);
-int			get_color_inter(t_inter inter, t_object_list *lst);
 void		get_scene(char *path);
 void		put_error(char const *str);
 void		push_spot(char **line);
@@ -84,8 +91,6 @@ t_vec		cross_prod(t_vec u, t_vec v);
 double		scalar_prod(t_vec u, t_vec v);
 double		**inv_mat(double **rot);
 void		apply_rot(double **rot, t_vec *pt);
-int			color_add(int col1, int col2);
-int			color_mult(int color, double fac);
 char		**ft_strsplit(char * line, char c);
 int			get_next_line(int fd, char **line);
 int			ft_all_num(char *line);

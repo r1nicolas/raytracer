@@ -32,7 +32,7 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 {
 	t_sphere	sp;
 	double		t;
-	t_vec		inter;
+	t_vec		pos;
 
 	sp = *((t_sphere *)e);
 	apply_trans_inv(sp.center, &(ray.point));
@@ -45,15 +45,15 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 			pt->dist = malloc(sizeof(double));
 		free_info(pt);
 		*(pt->dist) = t;
-		inter = get_inter(ray, t);
-		pt->normal = unit_vect(inter.x, inter.y, inter.z);
+		pos = get_inter(ray, t);
+		pt->normal = unit_vect(pos.x, pos.y, pos.z);
 		if (scalar_prod(pt->normal, ray.dir) > 0)
 			pt->normal = mult_scalar(pt->normal, -1);
-		apply_trans(sp.center, &inter);
-		get_info(pt, light, inter);
+		apply_trans(sp.center, &pos);
+		get_info(pt, light, pos);
 		pt->refl = get_refl(ray, pt->normal);
 		pt->color = sp.color;
-		pt->inter = inter;
+		pt->pos = pos;
 	}
 }
 

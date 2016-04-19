@@ -6,7 +6,7 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/27 16:45:36 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/03/27 17:08:21 by hmichals         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:00:07 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	instance_funct(t_func *funct)
 	funct[0] = int_plane;
 	funct[1] = int_sphere;
 	funct[2] = int_cylinder;
-	funct[3] = int_cone;
+	funct[3] = cone_inter;
 	funct[4] = int_quad;
 }
 
@@ -48,6 +48,6 @@ void	instance_funct2(t_func2 *funct)
 	funct[0] = sh_plane;
 	funct[1] = sh_sphere;
 	funct[2] = sh_cylinder;
-	funct[3] = sh_cone;
+	funct[3] = cone_shadow;
 	funct[4] = sh_quad;
 }

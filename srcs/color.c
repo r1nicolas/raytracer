@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 18:35:19 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/18 18:14:21 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/19 19:04:36 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Multiplies a color by a factor
 */
 
-int		color_mult(int color, double factor)
+static int	color_mult(int color, double factor)
 {
 	int		red;
 	int		green;
@@ -48,7 +48,7 @@ int		color_mult(int color, double factor)
 ** Adds two colors together
 */
 
-int		color_add(int color1, int color2)
+static int	color_add(int color1, int color2)
 {
 	int		red;
 	int		green;
@@ -66,10 +66,11 @@ int		color_add(int color1, int color2)
 	return (red * 0x10000 + green * 0x100 + blue);
 }
 
+/*
+** get the color at the intersection "inter" using the object list "list"
+*/
 
-
-
-int		get_color_inter(t_inter inter, t_object_list *list)
+int			get_color_inter(t_inter inter, t_object_list *list)
 {
 	int		result;
 	int		diffuse;
@@ -82,7 +83,7 @@ int		get_color_inter(t_inter inter, t_object_list *list)
 	while (inter.light_ray_list)
 	{
 		s_prod = scalar_prod(inter.normal, inter.light_ray_list->light.dir);
-		if (s_prod < 0 && shadow(inter.inter, list, inter.light_ray_list))
+		if (s_prod < 0 && shadow(inter.pos, list, inter.light_ray_list))
 		{
 			diffuse = color_mult(inter.color, -0.8 * s_prod / spot_number);
 			s_prod = scalar_prod(inter.refl, inter.light_ray_list->light.dir);

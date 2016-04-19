@@ -1,0 +1,130 @@
+./srcs/cone.c:23:	a = ray.dir.x * ray.dir.x + ray.dir.y * ray.dir.y - tan2 * ray.dir.z
+./srcs/cone.c:26:		- tan2 * ray.point.z * ray.dir.z);
+./srcs/cone.c:28:		- tan2 * ray.point.z * ray.point.z;
+./srcs/cone.c:77:	if (t < 0 || t > dist - 0.001)
+./srcs/maths_vec.c:26:	rot.x = v.z * u.y - v.y * u.z;
+./srcs/maths_vec.c:27:	rot.y = v.x * u.z - v.z * u.x;
+./srcs/maths_vec.c:28:	rot.z = v.y * u.x - v.x * u.y;
+./srcs/maths_vec.c:53:	y->x = y->x - x.x;
+./srcs/maths_vec.c:54:	y->y = y->y - x.y;
+./srcs/maths_vec.c:55:	y->z = y->z - x.z;
+./srcs/sphere.c:27:		+ ray.point.z * ray.point.z - sp.radius * sp.radius;
+./srcs/sphere.c:68:	if (t < 0 || t > dist - 0.001)
+./srcs/ft_strsplit.c:51:	while (size--)
+./srcs/ft_all_num.c:20:	if (*str == '-')
+./srcs/maths_rot.c:24:	ret[0][0] = ort.x * ort.x + (1 - ort.x * ort.x) * c;
+./srcs/maths_rot.c:25:	ret[0][1] = ort.x * ort.y * (1 - c) - ort.z * s;
+./srcs/maths_rot.c:26:	ret[0][2] = ort.z * ort.x * (1 - c) + ort.y * s;
+./srcs/maths_rot.c:27:	ret[1][0] = ort.x * ort.y * (1 - c) + ort.z * s;
+./srcs/maths_rot.c:28:	ret[1][1] = ort.y * ort.y + (1 - ort.y * ort.y) * c;
+./srcs/maths_rot.c:29:	ret[1][2] = ort.y * ort.z * (1 - c) - ort.x * s;
+./srcs/maths_rot.c:30:	ret[2][0] = ort.z * ort.x * (1 - c) - ort.y * s;
+./srcs/maths_rot.c:31:	ret[2][1] = ort.y * ort.z * (1 - c) + ort.x * s;
+./srcs/maths_rot.c:32:	ret[2][2] = ort.z * ort.z + (1 - ort.z * ort.z) * c;
+./srcs/maths_rot.c:80:	inv[0][0] = rot[1][1] * rot[2][2] - rot[1][2] * rot[2][1];
+./srcs/maths_rot.c:81:	inv[1][0] = rot[1][2] * rot[2][0] - rot[2][2] * rot[1][0];
+./srcs/maths_rot.c:82:	inv[2][0] = rot[1][0] * rot[2][1] - rot[1][1] * rot[2][0];
+./srcs/maths_rot.c:83:	inv[0][1] = rot[2][1] * rot[0][2] - rot[2][2] * rot[0][1];
+./srcs/maths_rot.c:84:	inv[1][1] = rot[2][2] * rot[0][0] - rot[0][2] * rot[2][0];
+./srcs/maths_rot.c:85:	inv[2][1] = rot[2][0] * rot[0][1] - rot[2][1] * rot[0][0];
+./srcs/maths_rot.c:86:	inv[0][2] = rot[0][1] * rot[1][2] - rot[0][2] * rot[1][1];
+./srcs/maths_rot.c:87:	inv[1][2] = rot[0][2] * rot[1][0] - rot[0][0] * rot[1][2];
+./srcs/maths_rot.c:88:	inv[2][2] = rot[0][0] * rot[1][1] - rot[0][1] * rot[1][0];
+./srcs/res_equ_thrd.c:44:		v[1] = pow(sqrt(v[0]) - q / 2, 1 / 3) + pow(-q / 2 - sqrt(v[0]), 1 / 3);
+./srcs/res_equ_thrd.c:62:	delta = b * b - 4 * a * c;
+./srcs/res_equ_thrd.c:73:		tab = al_tb((-b - sqrt(delta)) / (2 * a),
+./srcs/res_equ_thrd.c:98:		v[0] = c / a - b * b / (3 * a * a);
+./srcs/res_equ_thrd.c:99:		v[1] = d / a - b * c / (3 * a * a) + 2 * pow(b / (3 * a), 3);
+./srcs/res_equ_thrd.c:101:		tab[0] = tab[0] - b / (3 * a);
+./srcs/res_equ_thrd.c:102:		tab[1] = tab[1] - b / (3 * a);
+./srcs/res_equ_thrd.c:103:		tab[2] = tab[2] - b / (3 * a);
+./srcs/get_next_line.c:54:		*head_buff = (*head_buff)->next;
+./srcs/get_next_line.c:71:	if ((tmp = (char*)malloc(sizeof(*tmp) * (*size + i - buff->i))) == NULL)
+./srcs/quad.c:87:	if (t < 0 || t > dist - 0.001)
+./srcs/info.c:24:		info->light.dir = unit_vect(inter.x - light->spot.x, inter.y
+./srcs/info.c:25:			- light->spot.y, inter.z - light->spot.z);
+./srcs/maths_obj.c:51:	delta = b * b - 4 * a * c;
+./srcs/maths_obj.c:54:	t1 = (-b - sqrt(delta)) / (2 * a);
+./srcs/plane.c:23:	t = -(plane.d + plane.a * ray.point.x + plane.b * ray.point.y
+./srcs/plane.c:65:	if (t < 0 || t > dist - 0.001)
+./srcs/cylinder.c:26:		- cy.radius * cy.radius;
+./srcs/cylinder.c:67:	if (t < 0 || t > dist - 0.001)
+./srcs/camera.c:63:	ray.point.x = ray.point.x + width * cam.right.x * (x - WINCOL / 2)
+./srcs/camera.c:64:		+ height * cam.down.x * (y - WINROW / 2);
+./srcs/camera.c:65:	ray.point.y = ray.point.y + width * cam.right.y * (x - WINCOL / 2)
+./srcs/camera.c:66:		+ height * cam.down.y * (y - WINROW / 2);
+./srcs/camera.c:67:	ray.point.z = ray.point.z + width * cam.right.z * (x - WINCOL / 2)
+./srcs/camera.c:68:		+ height * cam.down.z * (y - WINROW / 2);
+Binary file ./objs/main.o matches
+Binary file ./objs/parse_scene.o matches
+Binary file ./objs/sphere.o matches
+Binary file ./objs/create_list.o matches
+Binary file ./.git/objects/a0/402147ddd0a6abfd23af5d5f585fda8e1228a4 matches
+Binary file ./.git/objects/b9/c8c82dec50244b31f1ae2b6f84be1668688d7b matches
+Binary file ./.git/objects/62/9eb2257089305bca4f6cd5431c79fd8bddfa35 matches
+Binary file ./.git/objects/b8/cf18480f27be5d38db8619818004fdb3c544ba matches
+Binary file ./.git/objects/9e/f39a0b64992bb6ffa3f88eed5fcf9337f05a3f matches
+Binary file ./.git/objects/93/39deb5f3bb0ac51dca50ea42f2d0af3cd791c8 matches
+Binary file ./.git/objects/8a/c2775693d9cc46ab4bcc039984e55c2c956a4d matches
+Binary file ./.git/objects/33/97ce26cb1d6a08a352e3a7ef4f6f5579fce6f8 matches
+Binary file ./.git/objects/f2/160a24866a24e520fd81bfaaf1230167b52ada matches
+Binary file ./.git/objects/4a/23bf4518b85a2b0d161e2ead8a5b27ddf171d6 matches
+Binary file ./.git/objects/78/d8c9bdd9c1c3447c4d0b731f378d90cfb8eedc matches
+Binary file ./.git/objects/0c/fccf6e03df14d5170cd6a10a0e2309ee4b605b matches
+Binary file ./.git/objects/ea/132b4913353453d7d172f5f2d03996f5bd5f24 matches
+Binary file ./.git/objects/fa/2b83556ecf60100756f60cf521269308078877 matches
+Binary file ./.git/objects/ae/7d9f027b4e60fe3a9fc5c56d9ccec75f7cd120 matches
+Binary file ./.git/objects/cd/ddf500df94beeba9e36db68bf3bd531d258b14 matches
+Binary file ./.git/objects/65/6d24837f23d94c3f8a6ab3b436e4fcad9bee9c matches
+Binary file ./.git/objects/ce/286447f066f926b8a7b7de5aab755587def475 matches
+Binary file ./.git/objects/84/7fd8179956b9493dd1264e066f90a3726e54b5 matches
+Binary file ./.git/objects/eb/b1933b67eee188dc8d7393d26500ad0af6077d matches
+Binary file ./.git/objects/d4/6bf5902773e90b22193e38d7b87265f468f7e6 matches
+Binary file ./.git/objects/9a/1dd01fa7255c5d4caac45d3e3c18d3bae32e3a matches
+Binary file ./.git/objects/3f/987174a8a21e930e23a85103b992dcdeca2aa4 matches
+Binary file ./.git/objects/3f/c4f25260069840995c306d1a924d785f1f090b matches
+Binary file ./.git/objects/90/f6d47b31f948ecff91b12f1c769c783a4ac4f1 matches
+Binary file ./.git/objects/b2/6b9fe395c9f1399d12ac80bc81a67476ffbcb7 matches
+Binary file ./.git/objects/50/ba9ae73e8ea9b107ce90ad4b7361f2e947e85c matches
+Binary file ./.git/objects/c3/c0db87ae2e4679dfceb48048d1c0ece2b33159 matches
+Binary file ./.git/objects/7a/13ab68896ef2427e60d2c2a7178537fb935d85 matches
+Binary file ./.git/objects/14/b899e4cfa1e6582f861618bd250731e57252cf matches
+Binary file ./.git/objects/46/b05303d4929fa839af03bb8224353f76875e83 matches
+Binary file ./.git/objects/34/bc77db1304c59d3d001d28d9c2c9d1cf0879dc matches
+Binary file ./.git/objects/34/2359e8bc21778a335f4e59f9b1f48503614b61 matches
+Binary file ./.git/objects/c9/d049f08a8d45cf1de4e4513dff491492dfc35d matches
+./.git/info/exclude:1:# git ls-files --others --exclude-from=.git/info/exclude
+./.git/hooks/applypatch-msg.sample:13:commitmsg="$(git rev-parse --git-path hooks/commit-msg)"
+./.git/hooks/prepare-commit-msg.sample:15:# The second includes the output of "git diff --name-status -r"
+./.git/hooks/prepare-commit-msg.sample:17:# commented because it doesn't cope with --amend or with squashed
+./.git/hooks/prepare-commit-msg.sample:29:#      print "\n" . `git diff --cached --name-status -r`
+./.git/hooks/update.sample:9:# ------
+./.git/hooks/update.sample:27:# --- Command line
+./.git/hooks/update.sample:32:# --- Safety check
+./.git/hooks/update.sample:45:# --- Config
+./.git/hooks/update.sample:46:allowunannotated=$(git config --bool hooks.allowunannotated)
+./.git/hooks/update.sample:47:allowdeletebranch=$(git config --bool hooks.allowdeletebranch)
+./.git/hooks/update.sample:48:denycreatebranch=$(git config --bool hooks.denycreatebranch)
+./.git/hooks/update.sample:49:allowdeletetag=$(git config --bool hooks.allowdeletetag)
+./.git/hooks/update.sample:50:allowmodifytag=$(git config --bool hooks.allowmodifytag)
+./.git/hooks/update.sample:61:# --- Check types
+./.git/hooks/update.sample:127:# --- Finished
+./.git/hooks/pre-applypatch.sample:12:precommit="$(git rev-parse --git-path hooks/pre-commit)"
+./.git/hooks/pre-commit.sample:10:if git rev-parse --verify HEAD >/dev/null 2>&1
+./.git/hooks/pre-commit.sample:19:allownonascii=$(git config --bool hooks.allownonascii)
+./.git/hooks/pre-commit.sample:31:	test $(git diff --cached --name-only --diff-filter=A -z $against |
+./.git/hooks/pre-commit.sample:32:	  LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+./.git/hooks/pre-commit.sample:49:exec git diff-index --check --cached $against --
+./.git/hooks/pre-push.sample:9:# $1 -- Name of the remote to which the push is being done
+./.git/hooks/pre-push.sample:10:# $2 -- URL to which the push is being done
+./.git/hooks/pre-push.sample:44:		commit=`git rev-list -n 1 --grep '^WIP' "$range"`
+./.git/hooks/pre-rebase.sample:11:# $1 -- the upstream the series was forked from.
+./.git/hooks/pre-rebase.sample:12:# $2 -- the branch being rebased (or empty when rebasing the current branch).
+./.git/hooks/pre-rebase.sample:46:not_in_master=`git rev-list --pretty=oneline ^master "$topic"`
+./.git/hooks/pre-rebase.sample:67:	not_in_next=`git rev-list --pretty=oneline ^${publish} "$topic"`
+./.git/hooks/pre-rebase.sample:127:    build on top of it -- other people may already want to
+./.git/hooks/pre-rebase.sample:135:		   o---o---o---o---o---o---o---o---o---o "next"
+./.git/hooks/pre-rebase.sample:137:		 /   a---a---b A     /           /
+./.git/hooks/pre-rebase.sample:139:	       /   /   c---c---c---c B         /
+./.git/hooks/pre-rebase.sample:141:	     /   /   /   b---b C     \       /
+./.git/hooks/pre-rebase.sample:143:    ---o---o---o---o---o---o---o---o---o---o---o "master"

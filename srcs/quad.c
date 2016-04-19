@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/13 16:32:50 by rnicolas          #+#    #+#             */
-/*   Updated: 2014/03/27 16:45:14 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/19 17:20:15 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static double	get_dist(t_ray ray, t_quad quad)
 	return (t);
 }
 
-static t_vec	get_normal_quad(t_vec inter, t_quad quad)
+static t_vec	get_normal_quad(t_vec pos, t_quad quad)
 {
 	t_vec		ret;
 
-	ret = unit_vect(2 * quad.a * inter.x + 2 * quad.d * inter.y + 2
-			* quad.e * inter.z + quad.g, 2 * quad.b * inter.y + 2 * quad.d
-			* inter.x + 2 * quad.f * inter.z + quad.h, 2 * quad.c * inter.z + 2
-			* quad.e * inter.x + 2 * quad.e * inter.y + quad.i);
+	ret = unit_vect(2 * quad.a * pos.x + 2 * quad.d * pos.y + 2 * quad.e
+			* pos.z + quad.g, 2 * quad.b * pos.y + 2 * quad.d * pos.x + 2
+			* quad.f * pos.z + quad.h, 2 * quad.c * pos.z + 2 * quad.e * pos.x
+			+ 2 * quad.e * pos.y + quad.i);
 	return (ret);
 }
 
@@ -54,7 +54,7 @@ void			int_quad(t_inter *pt, void *e, t_ray ray, t_light *light)
 {
 	t_quad		quad;
 	double		t;
-	t_vec		inter;
+	t_vec		pos;
 
 	quad = *((t_quad *)e);
 	t = get_dist(ray, quad);
@@ -66,14 +66,14 @@ void			int_quad(t_inter *pt, void *e, t_ray ray, t_light *light)
 			pt->dist = malloc(sizeof(double));
 		free_info(pt);
 		*(pt->dist) = t;
-		inter = get_inter(ray, t);
-		pt->normal = get_normal_quad(inter, quad);
+		pos = get_inter(ray, t);
+		pt->normal = get_normal_quad(pos, quad);
 		if (scalar_prod(pt->normal, ray.dir) > 0)
 			pt->normal = mult_scalar(pt->normal, -1);
 		pt->refl = get_refl(ray, pt->normal);
 		pt->color = quad.color;
-		pt->inter = inter;
-		get_info(pt, light, inter);
+		pt->pos = pos;
+		get_info(pt, light, pos);
 	}
 }
 

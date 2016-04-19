@@ -31,7 +31,7 @@ void			int_cylinder(t_inter *pt, void *e, t_ray ray, t_light *light)
 {
 	t_cylinder	cy;
 	double		t;
-	t_vec		inter;
+	t_vec		pos;
 	t_ray		temp;
 
 	cy = *((t_cylinder *)e);
@@ -44,15 +44,15 @@ void			int_cylinder(t_inter *pt, void *e, t_ray ray, t_light *light)
 			pt->dist = malloc(sizeof(double));
 		free_info(pt);
 		*(pt->dist) = t;
-		inter = get_inter(ray, t);
-		pt->normal = unit_vect(inter.x, inter.y, 0);
+		pos = get_inter(ray, t);
+		pt->normal = unit_vect(pos.x, pos.y, 0);
 		if (scalar_prod(pt->normal, ray.dir) > 0)
 			pt->normal = mult_scalar(pt->normal, -1);
-		op_inv(cy.trans, cy.rot, &(pt->normal), &inter);
+		op_inv(cy.trans, cy.rot, &(pt->normal), &pos);
 		pt->refl = get_refl(temp, pt->normal);
 		pt->color = cy.color;
-		pt->inter = inter;
-		get_info(pt, light, inter);
+		pt->pos = pos;
+		get_info(pt, light, pos);
 	}
 }
 
