@@ -43,15 +43,15 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 	{
 		if (pt->dist == NULL)
 			pt->dist = malloc(sizeof(double));
-		free_info(pt);
+		free_light_ray_list(pt);
 		*(pt->dist) = t;
-		pos = get_inter(ray, t);
+		pos = calculate_position(ray, t);
 		pt->normal = unit_vect(pos.x, pos.y, pos.z);
 		if (scalar_prod(pt->normal, ray.dir) > 0)
 			pt->normal = mult_scalar(pt->normal, -1);
 		apply_trans(sp.center, &pos);
-		get_info(pt, light, pos);
-		pt->refl = get_refl(ray, pt->normal);
+		create_light_ray_list(pt, light, pos);
+		pt->refl = calculate_reflection(ray, pt->normal);
 		pt->color = sp.color;
 		pt->pos = pos;
 	}

@@ -35,7 +35,7 @@ int			get_color(t_ray ray, t_scene sc)
 	{
 		color = get_color_inter(inter, sc.list);
 		free(inter.dist);
-		free_info(&inter);
+		free_light_ray_list(&inter);
 		return (color);
 	}
 }

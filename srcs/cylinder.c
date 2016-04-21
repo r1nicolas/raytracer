@@ -14,7 +14,11 @@
 #include <math.h>
 #include <stdlib.h>
 
-static double	init_equation(t_ray ray, t_cylinder cy)
+/*
+** Return the distance to the cylinder fro; the screen using a ray.
+*/
+
+static double	cylinder_distance(t_ray ray, t_cylinder cylinder)
 {
 	double		a;
 	double		b;
@@ -23,48 +27,72 @@ static double	init_equation(t_ray ray, t_cylinder cy)
 	a = ray.dir.x * ray.dir.x + ray.dir.y * ray.dir.y;
 	b = 2 * (ray.dir.x * ray.point.x + ray.dir.y * ray.point.y);
 	c = ray.point.x * ray.point.x + ray.point.y * ray.point.y
-		- cy.radius * cy.radius;
+		- cylinder.radius * cylinder.radius;
 	return (res_equ_scnd(a, b, c));
 }
 
-void			int_cylinder(t_inter *pt, void *e, t_ray ray, t_light *light)
+/*
+** Return the normal to the cylinder in the position pos.
+*/
+
+static t_vec	cylinder_normal(t_vec pos, t_cylinder cylinder)
 {
-	t_cylinder	cy;
-	double		t;
+	t_vec		normal;
+
+	(void)cylinder;
+	normal = unit_vect(pos.x, pos.y, 0);
+	return (normal);
+}
+
+/*
+** Fill the information of the inter structure if the object obj is closer than
+** the previous object or if it is the first object. 
+*/
+
+void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
+	t_light *light)
+{
+	t_cylinder	cylinder;
+	double		dist;
 	t_vec		pos;
 	t_ray		temp;
 
-	cy = *((t_cylinder *)e);
+	cylinder = *((t_cylinder *)obj);
 	temp = ray;
-	change_frame(&ray, cy.inv, mult_scalar(cy.trans, -1));
-	t = init_equation(ray, cy);
-	if (t >= 0 && (pt->dist == NULL || *(pt->dist) > t))
+	change_frame(&ray, cylinder.inv, mult_scalar(cylinder.trans, -1));
+	dist = cylinder_distance(ray, cylinder);
+	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
-		if (pt->dist == NULL)
-			pt->dist = malloc(sizeof(double));
-		free_info(pt);
-		*(pt->dist) = t;
-		pos = get_inter(ray, t);
-		pt->normal = unit_vect(pos.x, pos.y, 0);
-		if (scalar_prod(pt->normal, ray.dir) > 0)
-			pt->normal = mult_scalar(pt->normal, -1);
-		op_inv(cy.trans, cy.rot, &(pt->normal), &pos);
-		pt->refl = get_refl(temp, pt->normal);
-		pt->color = cy.color;
-		pt->pos = pos;
-		get_info(pt, light, pos);
+		if (inter->dist == NULL)
+			inter->dist = malloc(sizeof(double));
+		free_light_ray_list(inter);
+		*(inter->dist) = dist;
+		pos = calculate_position(ray, dist);
+		inter->normal = cylinder_normal(pos, cylinder);
+		if (scalar_prod(inter->normal, ray.dir) > 0)
+			inter->normal = mult_scalar(inter->normal, -1);
+		op_inv(cylinder.trans, cylinder.rot, &(inter->normal), &pos);
+		inter->refl = calculate_reflection(temp, inter->normal);
+		inter->color = cylinder.color;
+		inter->pos = pos;
+		create_light_ray_list(inter, light, pos);
 	}
 }
 
-int				sh_cylinder(void *e, t_ray ray, double dist)
-{
-	t_cylinder	cy;
-	double		t;
+/*
+** Return if the object obj cast a shadow on the ray position, light_dist is
+** the distance of the light source.
+*/
 
-	cy = *((t_cylinder *)e);
-	change_frame(&ray, cy.inv, mult_scalar(cy.trans, -1));
-	t = init_equation(ray, cy);
-	if (t < 0 || t > dist - 0.001)
+int				cylinder_shadow(void *obj, t_ray ray, double light_dist)
+{
+	t_cylinder	cylinder;
+	double		cylinder_dist;
+
+	cylinder = *((t_cylinder *)obj);
+	change_frame(&ray, cylinder.inv, mult_scalar(cylinder.trans, -1));
+	cylinder_dist = cylinder_distance(ray, cylinder);
+	if (cylinder_dist < 0 || cylinder_dist > light_dist - 0.001)
 		return (0);
 	return (1);
 }

@@ -38,7 +38,7 @@ void	instance_funct(t_func *funct)
 {
 	funct[0] = int_plane;
 	funct[1] = int_sphere;
-	funct[2] = int_cylinder;
+	funct[2] = cylinder_inter;
 	funct[3] = cone_inter;
 	funct[4] = int_quad;
 }
@@ -47,7 +47,7 @@ void	instance_funct2(t_func2 *funct)
 {
 	funct[0] = sh_plane;
 	funct[1] = sh_sphere;
-	funct[2] = sh_cylinder;
+	funct[2] = cylinder_shadow;
 	funct[3] = cone_shadow;
 	funct[4] = sh_quad;
 }

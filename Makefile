@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/18 18:00:57 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/04/21 20:17:40 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -22,12 +22,12 @@ OBJDIR = ./objs/
 
 SRC =	main.c \
 		tab_func.c \
-		info.c \
+		ray_list.c \
 		quad.c \
 		parse_scene.c \
 		error.c \
-		create_list2.c \
-		create_list.c \
+		parser_1.c \
+		parser_2.c \
 		cone.c \
 		intersection.c \
 		cylinder.c \
@@ -40,15 +40,15 @@ SRC =	main.c \
 		maths_vec.c \
 		maths_rot.c \
 		color.c \
-		ft_strsplit.c \
+		strsplit.c \
 		get_next_line.c \
-		ft_all_num.c \
+		is_all_num.c \
 		free_matrix.c
 #		res_equ_thrd.c 
 
 IFLAGS = -I includes -I ~/.brew/include/SDL2
 
-LDFLAGS = -L ~/.brew/lib -lSDL2
+LDFLAGS = -L ~/.brew/lib -lSDL2 -lm
 
 OBJ = $(SRC:%.c=%.o)
 

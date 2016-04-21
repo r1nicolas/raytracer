@@ -6,12 +6,14 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/27 17:16:14 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/19 17:07:19 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/21 18:23:31 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
+# include <unistd.h>
 
 typedef struct				s_vec
 {
@@ -132,6 +134,15 @@ typedef struct				s_quad
 	double					j;
 	int						color;
 }							t_quad;
+
+typedef struct				s_buff
+{
+	int						fd;
+	ssize_t					size;
+	ssize_t					i;
+	char					buff[BUFF_SIZE];
+	struct s_buff			*next;
+}							t_buff;
 
 typedef int					(*t_func2)(void *e, t_ray ray, double dist);
 typedef void				(*t_func)(t_inter *pt, void *e, t_ray ray, t_light *li);

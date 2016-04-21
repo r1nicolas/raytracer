@@ -6,24 +6,17 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/01/26 22:51:33 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/15 18:48:02 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/21 18:32:14 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <raytracer.h>
 
-#define BUFF_SIZE 512
-#define DELIM_CHAR '\n'
-
-typedef struct		s_buff
-{
-	int				fd;
-	ssize_t			size;
-	ssize_t			i;
-	char			buff[BUFF_SIZE];
-	struct s_buff	*next;
-}					t_buff;
+/*
+** Return the buffer of corresponding to the file descriptor.
+*/
 
 static t_buff		*get_buff(t_buff **head_buff, int const fd)
 {
@@ -45,6 +38,10 @@ static t_buff		*get_buff(t_buff **head_buff, int const fd)
 	return (tmp);
 }
 
+/*
+** Remove a buffer from the list.
+*/
+
 static void			del_buff(t_buff **head_buff, t_buff *buff)
 {
 	t_buff			*tmp;
@@ -59,6 +56,11 @@ static void			del_buff(t_buff **head_buff, t_buff *buff)
 		tmp->next = buff->next;
 	free(buff);
 }
+
+/*
+** Allocate memory to line and fill it from the corresponding buffer.
+** Return 1 if the line is over and 0 if not.
+*/
 
 static ssize_t		add_line(char **line, ssize_t *size, t_buff *buff)
 {
@@ -84,6 +86,11 @@ static ssize_t		add_line(char **line, ssize_t *size, t_buff *buff)
 		return (1);
 	return (0);
 }
+
+/*
+** Put the next line of the file designated by fd in the Cstring pointed by line.
+** Return 1 if it worked, 0 at the end the file and -1 in case of error.
+*/
 
 int					get_next_line(int const fd, char **line)
 {

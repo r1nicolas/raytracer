@@ -6,7 +6,7 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/02 19:17:39 by tlepetit          #+#    #+#             */
-/*   Updated: 2016/04/19 19:18:39 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/21 16:43:13 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,39 @@
 
 /*
 ** Return the distance to the cone from the screen using a ray.
-** tan2 is is tangente of the angle of aperture of the cone squared.
 */
 
-static double	cone_distance(t_ray ray, double tan2)
+static double	cone_distance(t_ray ray, t_cone cone)
 {
 	double		a;
 	double		b;
 	double		c;
+	double		tan_2;
 
-	a = ray.dir.x * ray.dir.x + ray.dir.y * ray.dir.y - tan2 * ray.dir.z
+	tan_2 = tan(cone.angle);
+	tan_2 = tan_2 * tan_2;
+	a = ray.dir.x * ray.dir.x + ray.dir.y * ray.dir.y - tan_2 * ray.dir.z
 		* ray.dir.z;
 	b = 2 * (ray.dir.x * ray.point.x + ray.dir.y * ray.point.y
-		- tan2 * ray.point.z * ray.dir.z);
+		- tan_2 * ray.point.z * ray.dir.z);
 	c = ray.point.x * ray.point.x + ray.point.y * ray.point.y
-		- tan2 * ray.point.z * ray.point.z;
+		- tan_2 * ray.point.z * ray.point.z;
 	return (res_equ_scnd(a, b, c));
 }
 
 /*
-** Return the normal to the cone of aperture angle in the position pos.
+** Return the normal to the cone in the position pos.
 */
 
-static t_vec	cone_normal(t_vec pos, double angle)
+static t_vec	cone_normal(t_vec pos, t_cone cone)
 {
-	t_vec		res;
+	t_vec		normal;
+	double		tan_2;
 
-	res = unit_vect(pos.x, pos.y, -pow(tan(angle), 2) * pos.z);
-	return (res);
+	tan_2 = tan(cone.angle);
+	tan_2 = tan_2 * tan_2;
+	normal = unit_vect(pos.x, pos.y, -tan_2 * pos.z);
+	return (normal);
 }
 
 /*
@@ -62,22 +67,22 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 	cone = *((t_cone *)obj);
 	temp = ray;
 	change_frame(&ray, cone.inv, mult_scalar(cone.apex, -1));
-	dist = cone_distance(ray, tan(cone.angle) * tan(cone.angle));
+	dist = cone_distance(ray, cone);
 	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
-		free_info(inter);
+		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = get_inter(ray, dist);
-		inter->normal = cone_normal(pos, cone.angle);
+		pos = calculate_position(ray, dist);
+		inter->normal = cone_normal(pos, cone);
 		if (scalar_prod(inter->normal, ray.dir) > 0)
 			inter->normal = mult_scalar(inter->normal, -1);
 		op_inv(cone.apex, cone.rot, &(inter->normal), &pos);
-		inter->refl = get_refl(temp, inter->normal);
+		inter->refl = calculate_reflection(temp, inter->normal);
 		inter->color = cone.color;
 		inter->pos = pos;
-		get_info(inter, light, pos);
+		create_light_ray_list(inter, light, pos);
 	}
 }
 
@@ -93,7 +98,7 @@ int				cone_shadow(void *obj, t_ray ray, double light_dist)
 
 	cone = *((t_cone *)obj);
 	change_frame(&ray, cone.inv, mult_scalar(cone.apex, -1));
-	cone_dist = cone_distance(ray, tan(cone.angle) * tan(cone.angle));
+	cone_dist = cone_distance(ray, cone);
 	if (cone_dist < 0 || cone_dist > light_dist - 0.001)
 		return (0);
 	return (1);
