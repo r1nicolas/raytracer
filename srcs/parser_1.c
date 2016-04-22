@@ -22,7 +22,7 @@ void			test_object(char **line, int size, char *name)
 	i = 0;
 	while (line[i] != NULL)
 	{
-		if (i > 1 && i + 1 < size && !ft_all_num(line[i]))
+		if (i > 1 && i + 1 < size && !is_all_num(line[i]))
 		{
 			write(2, name, strlen(name));
 			put_error(": wrong argument type\n");

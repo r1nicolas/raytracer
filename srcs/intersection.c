@@ -30,8 +30,8 @@ t_vec		calculate_position(t_ray ray, double dist)
 
 t_vec		calculate_reflection(t_ray ray, t_vec normal)
 {
-	double		scalar;
-	t_vec		u;
+	double			scalar;
+	t_vec			u;
 
 	scalar = scalar_prod(normal, ray.dir);
 	u = mult_scalar(normal, -2 * scalar);
@@ -58,13 +58,13 @@ void		change_frame(t_ray *ray, double **rot, t_vec trans)
 
 int			is_not_in_shadow(t_vec inter, t_object_list *obj_list, t_ray light)
 {
-	t_func2		funct[5];
+	t_func_shadow	tab_func_shadow[5];
 
-	instance_funct2(funct);
+	create_tab_func_shadow(tab_func_shadow);
 	while (obj_list)
 	{
-		if (funct[obj_list->obj](obj_list->e, light, 
-								 dist_point(inter, light.point)))
+		if (tab_func_shadow[obj_list->obj](obj_list->e, light, 
+										   dist_point(inter, light.point)))
 			return (0);
 		obj_list = obj_list->next;
 	}

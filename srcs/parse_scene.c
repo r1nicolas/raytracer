@@ -32,10 +32,10 @@ static void		init_default(void)
 
 static void		is_valid(char **line)
 {
-	char	*tab[7];
+	char	*tab_type[7];
 	int		i;
 
-	instance_func(tab);
+	create_tab_type(tab_type);
 	if (line != NULL)
 	{
 		if (strcmp(line[0], ">") != 0)
@@ -43,7 +43,7 @@ static void		is_valid(char **line)
 		i = 0;
 		while (i < 7 && line[1])
 		{
-			if (!strcmp(tab[i], line[1]))
+			if (!strcmp(tab_type[i], line[1]))
 				return ;
 			i++;
 		}
@@ -53,17 +53,17 @@ static void		is_valid(char **line)
 
 static void		get_params(char **line)
 {
-	t_parse		tab_f[7];
-	char		*tab[7];
-	int			i;
+	t_func_parse	tab_func_parse[7];
+	char			*tab_type[7];
+	int				i;
 
-	instance_func(tab);
-	instance_funcf(tab_f);
+	create_tab_type(tab_type);
+	create_tab_func_parse(tab_func_parse);
 	i = 0;
 	while (i < 7)
 	{
-		if (strcmp(tab[i], line[1]) == 0)
-			tab_f[i](line);
+		if (strcmp(tab_type[i], line[1]) == 0)
+			tab_func_parse[i](line);
 		i++;
 	}
 }

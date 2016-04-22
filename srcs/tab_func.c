@@ -12,7 +12,7 @@
 
 #include <raytracer.h>
 
-void	instance_func(char **tab)
+void	create_tab_type(char **tab)
 {
 	tab[0] = "plane";
 	tab[1] = "sphere";
@@ -23,31 +23,31 @@ void	instance_func(char **tab)
 	tab[6] = "quadric";
 }
 
-void	instance_funcf(t_parse *tabf)
+void	create_tab_func_parse(t_func_parse *tab)
 {
-	tabf[0] = push_plane;
-	tabf[1] = push_sphere;
-	tabf[2] = push_cylinder;
-	tabf[3] = push_cone;
-	tabf[4] = push_cam;
-	tabf[5] = push_spot;
-	tabf[6] = push_quad;
+	tab[0] = push_plane;
+	tab[1] = push_sphere;
+	tab[2] = push_cylinder;
+	tab[3] = push_cone;
+	tab[4] = push_cam;
+	tab[5] = push_spot;
+	tab[6] = push_quad;
 }
 
-void	instance_funct(t_func *funct)
+void	create_tab_func_inter(t_func_inter *tab)
 {
-	funct[0] = int_plane;
-	funct[1] = int_sphere;
-	funct[2] = cylinder_inter;
-	funct[3] = cone_inter;
-	funct[4] = int_quad;
+	tab[0] = int_plane;
+	tab[1] = int_sphere;
+	tab[2] = cylinder_inter;
+	tab[3] = cone_inter;
+	tab[4] = int_quad;
 }
 
-void	instance_funct2(t_func2 *funct)
+void	create_tab_func_shadow(t_func_shadow *tab)
 {
-	funct[0] = sh_plane;
-	funct[1] = sh_sphere;
-	funct[2] = cylinder_shadow;
-	funct[3] = cone_shadow;
-	funct[4] = sh_quad;
+	tab[0] = sh_plane;
+	tab[1] = sh_sphere;
+	tab[2] = cylinder_shadow;
+	tab[3] = cone_shadow;
+	tab[4] = sh_quad;
 }

@@ -144,8 +144,9 @@ typedef struct				s_buff
 	struct s_buff			*next;
 }							t_buff;
 
-typedef int					(*t_func2)(void *e, t_ray ray, double dist);
-typedef void				(*t_func)(t_inter *pt, void *e, t_ray ray, t_light *li);
-typedef void				(*t_parse)(char **line);
+typedef int					(*t_func_shadow)(void *e, t_ray ray, double dist);
+typedef void				(*t_func_inter)(t_inter *inter, void *e, t_ray ray,
+											t_light *li);
+typedef void				(*t_func_parse)(char **line);
 
 #endif

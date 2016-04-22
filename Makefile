@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/21 20:17:40 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/04/22 18:34:26 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -33,7 +33,6 @@ SRC =	main.c \
 		cylinder.c \
 		plane.c \
 		sphere.c \
-		list_object.c \
 		maths_obj.c \
 		maths_unit.c \
 		camera.c \

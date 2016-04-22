@@ -39,6 +39,7 @@ t_ray		new_ray(int x, int y, t_cam cam);
 */
 
 int			get_color_inter(t_inter inter, t_object_list *list);
+int			get_color(t_ray ray, t_scene sc);
 
 /*
 ** cone.c
@@ -82,14 +83,17 @@ void		change_frame(t_ray *ray, double **rot, t_vec trans);
 int			is_not_in_shadow(t_vec inter, t_object_list *lst, t_ray light);
 
 /*
-**
+** is_all_num.c
 */
 
+int			is_all_num(char *str);
+
+
 void		op_inv(t_vec trans, double **rot, t_vec *normal, t_vec *inter);
-void		instance_funct2(t_func2 *funct);
-void		instance_funct(t_func *funct);
-void		instance_funcf(t_parse *tabf);
-void		instance_func(char **tab);
+void		create_tab_func_shadow(t_func_shadow *tab);
+void		create_tab_func_inter(t_func_inter *tab);
+void		create_tab_func_parse(t_func_parse *tab);
+void		create_tab_type(char **tab);
 int			count_light(t_ray_list *light_ray_list);
 void		free_light_ray_list(t_inter *inter);
 void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos);
@@ -113,7 +117,6 @@ t_vec		vect_add(t_vec u, t_vec v);
 t_vec		mult_scalar(t_vec u, double scalar);
 t_vec		init_point(double x, double y, double z);
 double		dist_point(t_vec u, t_vec v);
-int			get_color(t_ray ray, t_scene sc);
 double		**get_rot(double angle, t_vec ort);
 void		init_ret(double ***ret);
 void		get_matrice(double **ret, double angle, t_vec ort);
@@ -127,6 +130,5 @@ double		scalar_prod(t_vec u, t_vec v);
 double		**inv_mat(double **rot);
 void		apply_rot(double **rot, t_vec *vector);
 char		**ft_strsplit(char * line, char c);
-int			ft_all_num(char *line);
 
 #endif

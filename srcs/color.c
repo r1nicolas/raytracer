@@ -12,6 +12,7 @@
 
 #include <raytracer.h>
 #include <math.h>
+#include <stdlib.h>
 
 /*
 ** Multiplies a color by a factor
@@ -96,4 +97,36 @@ int			get_color_inter(t_inter inter, t_object_list *list)
 		inter.light_ray_list = inter.light_ray_list->next;
 	}
 	return (result);
+}
+
+
+/*
+** Return the color that appears on the screen using a ray.
+*/
+
+int			get_color(t_ray ray, t_scene sc)
+{
+	t_inter			inter;
+	t_object_list	*list;
+	int				color;
+	t_func_inter	tab_func_inter[5];
+
+	create_tab_func_inter(tab_func_inter);
+	list = sc.list;
+	inter.dist = NULL;
+	inter.light_ray_list = NULL;
+	while (list)
+	{
+		tab_func_inter[list->obj](&inter, list->e, ray, sc.light);
+		list = list->next;
+	}
+	if (inter.dist == NULL)
+		return (0);
+	else
+	{
+		color = get_color_inter(inter, sc.list);
+		free(inter.dist);
+		free_light_ray_list(&inter);
+		return (color);
+	}
 }

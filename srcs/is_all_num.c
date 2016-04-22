@@ -10,25 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_all_num(char *str)
+#include <stdlib.h>
+
+/*
+** Return 1 if the Cstring str is a valid double and 0 if not.
+*/
+
+int		is_all_num(char *str)
 {
 	int		point;
+	int		i;
 
+	i = 0;
 	point = 0;
-	if (!str)
+	if (str == NULL)
 		return (0);
-	if (*str == '-')
-		str++;
-	while (*str)
+	if (str[i] == '-')
+		i++;
+	while (str[i] != '\0')
 	{
-		if (*str == '.' && *(str + 1))
+		if (str[i] == '.')
 		{
 			point++;
-			str++;
+			i++;
 		}
-		if ((*str < '0' || *str > '9') || point > 1)
+		if ((str[i] < '0' || str[i] > '9') || point > 1)
 			return (0);
-		str++;
+		i++;
 	}
 	return (1);
 }
