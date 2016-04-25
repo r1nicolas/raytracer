@@ -69,7 +69,7 @@ void			push_sphere(char **line)
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 7, "sphere");
 	elem = (t_sphere*)malloc(sizeof(t_sphere));
-	elem->center = init_point(atof(line[2]), atof(line[3]),
+	elem->center = new_vector(atof(line[2]), atof(line[3]),
 								atof(line[4]));
 	elem->radius = atof(line[5]);
 	elem->color = strtol(line[6], NULL, 16);
@@ -91,10 +91,10 @@ void			push_cylinder(char **line)
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 10, "cylinder");
 	elem = (t_cylinder*)malloc(sizeof(t_cylinder));
-	elem->rot = get_rot_obj(unit_vect(atof(line[2]), atof(line[3]),
+	elem->rot = matrix_direction(new_vector_unit(atof(line[2]), atof(line[3]),
 								atof(line[4])));
-	elem->inv = inv_mat(elem->rot);
-	elem->trans = init_point(atof(line[5]), atof(line[6]),
+	elem->inv = matrix_inverse(elem->rot);
+	elem->trans = new_vector(atof(line[5]), atof(line[6]),
 							atof(line[7]));
 	elem->radius = atof(line[8]);
 	elem->color = strtol(line[9], NULL, 16);
@@ -116,10 +116,10 @@ void			push_cone(char **line)
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 10, "cone");
 	elem = (t_cone*)malloc(sizeof(t_cone));
-	elem->rot = get_rot_obj(unit_vect(atof(line[2]), atof(line[3]),
+	elem->rot = matrix_direction(new_vector_unit(atof(line[2]), atof(line[3]),
 								atof(line[4])));
-	elem->inv = inv_mat(elem->rot);
-	elem->apex = init_point(atof(line[5]), atof(line[6]),
+	elem->inv = matrix_inverse(elem->rot);
+	elem->apex = new_vector(atof(line[5]), atof(line[6]),
 							atof(line[7]));
 	elem->angle = atof(line[8]);
 	elem->color = (int)strtol(line[9], NULL, 16);

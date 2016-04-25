@@ -6,7 +6,7 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/16 20:43:34 by tlepetit          #+#    #+#             */
-/*   Updated: 2014/02/28 16:57:09 by tlepetit         ###   ########.fr       */
+/*   Updated: 2016/04/25 16:59:07 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,90 @@
 #include <math.h>
 #include <stdlib.h>
 
-void			get_matrice(double **ret, double angle, t_vec ort)
-{
-	double		s;
-	double		c;
+/*
+** create and allocate matrix 3-3.
+*/
 
-	c = cos(angle);
-	s = sin(angle);
-	ret[0][0] = ort.x * ort.x + (1 - ort.x * ort.x) * c;
-	ret[0][1] = ort.x * ort.y * (1 - c) - ort.z * s;
-	ret[0][2] = ort.z * ort.x * (1 - c) + ort.y * s;
-	ret[1][0] = ort.x * ort.y * (1 - c) + ort.z * s;
-	ret[1][1] = ort.y * ort.y + (1 - ort.y * ort.y) * c;
-	ret[1][2] = ort.y * ort.z * (1 - c) - ort.x * s;
-	ret[2][0] = ort.z * ort.x * (1 - c) - ort.y * s;
-	ret[2][1] = ort.y * ort.z * (1 - c) + ort.x * s;
-	ret[2][2] = ort.z * ort.z + (1 - ort.z * ort.z) * c;
+static double	**new_matrix(void)
+{
+	double		**matrix;
+
+	matrix = (double**)malloc(3 * sizeof(double*));
+	matrix[0] = (double*)malloc(3 * sizeof(double));
+	matrix[1] = (double*)malloc(3 * sizeof(double));
+	matrix[2] = (double*)malloc(3 * sizeof(double));
+	matrix[0][0] = 1;
+	matrix[1][0] = 0;
+	matrix[2][0] = 0;
+	matrix[0][1] = 0;
+	matrix[1][1] = 1;
+	matrix[2][1] = 0;
+	matrix[0][2] = 0;
+	matrix[1][2] = 0;
+	matrix[2][2] = 1;
+	return (matrix);
 }
 
-void			init_ret(double ***ret)
+/*
+** Apply a rotation matric to a vector.
+*/
+
+
+t_vec			rotation_vector(double **mat, t_vec vector)
 {
-	(*ret) = (double**)malloc(3 * sizeof(double*));
-	(*ret)[0] = (double*)malloc(3 * sizeof(double));
-	(*ret)[1] = (double*)malloc(3 * sizeof(double));
-	(*ret)[2] = (double*)malloc(3 * sizeof(double));
-	(*ret)[0][0] = 1;
-	(*ret)[1][1] = 1;
-	(*ret)[2][2] = 1;
-	(*ret)[0][1] = 0;
-	(*ret)[0][2] = 0;
-	(*ret)[1][0] = 0;
-	(*ret)[1][2] = 0;
-	(*ret)[2][0] = 0;
-	(*ret)[2][1] = 0;
-}
+	t_vec		ret;
 
-void			apply_rot(double **rot, t_vec *pt)
-{
-	t_vec		tmp;
-
-	tmp.x = pt->x * rot[0][0] + pt->y * rot[0][1] + pt->z * rot[0][2];
-	tmp.y = pt->x * rot[1][0] + pt->y * rot[1][1] + pt->z * rot[1][2];
-	tmp.z = pt->x * rot[2][0] + pt->y * rot[2][1] + pt->z * rot[2][2];
-	*pt = tmp;
-}
-
-double			**get_rot(double angle, t_vec ort)
-{
-	double		**ret;
-
-	init_ret(&ret);
-	if (angle != 0)
-		get_matrice(ret, angle, ort);
+	ret.x = vector.x * mat[0][0] + vector.y * mat[0][1] + vector.z * mat[0][2];
+	ret.y = vector.x * mat[1][0] + vector.y * mat[1][1] + vector.z * mat[1][2];
+	ret.z = vector.x * mat[2][0] + vector.y * mat[2][1] + vector.z * mat[2][2];
 	return (ret);
 }
 
-double			**inv_mat(double **rot)
+/*
+** Create the rotation matrix of angle angle around the vector ort.
+*/
+
+double			**create_rotation_matrix(double angle, t_vec ort)
+{
+	double		**matrix;
+	double		s;
+	double		c;
+
+	matrix = new_matrix();
+	if (angle != 0)
+	{
+		c = cos(angle);
+		s = sin(angle);
+		matrix[0][0] = ort.x * ort.x + (1 - ort.x * ort.x) * c;
+		matrix[0][1] = ort.x * ort.y * (1 - c) - ort.z * s;
+		matrix[0][2] = ort.z * ort.x * (1 - c) + ort.y * s;
+		matrix[1][0] = ort.x * ort.y * (1 - c) + ort.z * s;
+		matrix[1][1] = ort.y * ort.y + (1 - ort.y * ort.y) * c;
+		matrix[1][2] = ort.y * ort.z * (1 - c) - ort.x * s;
+		matrix[2][0] = ort.z * ort.x * (1 - c) - ort.y * s;
+		matrix[2][1] = ort.y * ort.z * (1 - c) + ort.x * s;
+		matrix[2][2] = ort.z * ort.z + (1 - ort.z * ort.z) * c;
+	}
+	return (matrix);
+}
+
+/*
+** Return the inverse of an invertible matrix.
+*/
+
+double			**matrix_inverse(double **mat)
 {
 	double	**inv;
 
-	inv = malloc(sizeof(double*) * 3);
-	inv[0] = malloc(sizeof(double) * 3);
-	inv[1] = malloc(sizeof(double) * 3);
-	inv[2] = malloc(sizeof(double) * 3);
-	inv[0][0] = rot[1][1] * rot[2][2] - rot[1][2] * rot[2][1];
-	inv[1][0] = rot[1][2] * rot[2][0] - rot[2][2] * rot[1][0];
-	inv[2][0] = rot[1][0] * rot[2][1] - rot[1][1] * rot[2][0];
-	inv[0][1] = rot[2][1] * rot[0][2] - rot[2][2] * rot[0][1];
-	inv[1][1] = rot[2][2] * rot[0][0] - rot[0][2] * rot[2][0];
-	inv[2][1] = rot[2][0] * rot[0][1] - rot[2][1] * rot[0][0];
-	inv[0][2] = rot[0][1] * rot[1][2] - rot[0][2] * rot[1][1];
-	inv[1][2] = rot[0][2] * rot[1][0] - rot[0][0] * rot[1][2];
-	inv[2][2] = rot[0][0] * rot[1][1] - rot[0][1] * rot[1][0];
+	inv = new_matrix();
+	inv[0][0] = mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1];
+	inv[1][0] = mat[1][2] * mat[2][0] - mat[2][2] * mat[1][0];
+	inv[2][0] = mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0];
+	inv[0][1] = mat[2][1] * mat[0][2] - mat[2][2] * mat[0][1];
+	inv[1][1] = mat[2][2] * mat[0][0] - mat[0][2] * mat[2][0];
+	inv[2][1] = mat[2][0] * mat[0][1] - mat[2][1] * mat[0][0];
+	inv[0][2] = mat[0][1] * mat[1][2] - mat[0][2] * mat[1][1];
+	inv[1][2] = mat[0][2] * mat[1][0] - mat[0][0] * mat[1][2];
+	inv[2][2] = mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
 	return (inv);
 }

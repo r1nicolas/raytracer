@@ -25,22 +25,22 @@ t_cam		new_cam(t_vec pos, t_vec dir, double size, double rot)
 	double		**mat;
 
 	cam.pos = pos;
-	dir = unit_vect(dir.x, dir.y, dir.z);
+	dir = new_vector_unit(dir.x, dir.y, dir.z);
 	cam.dir = dir;
 	cam.size = size;
 	if (dir.x || dir.y)
-		cam.right = unit_vect(-dir.y, dir.x, 0);
+		cam.right = new_vector_unit(-dir.y, dir.x, 0);
 	else
-		cam.right = unit_vect(1, 0, 0);
-	cam.down = cross_prod(cam.dir, cam.right);
+		cam.right = new_vector_unit(1, 0, 0);
+	cam.down = vector_cross_product(cam.dir, cam.right);
 	if (cam.down.z > 0)
 	{
-		cam.down = mult_scalar(cam.down, -1);
-		cam.right = mult_scalar(cam.right, -1);
+		cam.down = vector_inverse(cam.down);
+		cam.right = vector_inverse(cam.right);
 	}
-	mat = get_rot(rot, cam.dir);
-	apply_rot(mat, &(cam.right));
-	apply_rot(mat, &(cam.down));
+	mat = create_rotation_matrix(rot, cam.dir);
+	cam.right = rotation_vector(mat, cam.right);
+	cam.down = rotation_vector(mat, cam.down);
 	free_matrix(mat);
 	return (cam);
 }

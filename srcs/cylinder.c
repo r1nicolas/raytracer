@@ -40,7 +40,7 @@ static t_vec	cylinder_normal(t_vec pos, t_cylinder cylinder)
 	t_vec		normal;
 
 	(void)cylinder;
-	normal = unit_vect(pos.x, pos.y, 0);
+	normal = new_vector_unit(pos.x, pos.y, 0);
 	return (normal);
 }
 
@@ -59,7 +59,7 @@ void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
 
 	cylinder = *((t_cylinder *)obj);
 	temp = ray;
-	change_frame(&ray, cylinder.inv, mult_scalar(cylinder.trans, -1));
+	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	dist = cylinder_distance(ray, cylinder);
 	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
@@ -69,8 +69,8 @@ void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
 		*(inter->dist) = dist;
 		pos = calculate_position(ray, dist);
 		inter->normal = cylinder_normal(pos, cylinder);
-		if (scalar_prod(inter->normal, ray.dir) > 0)
-			inter->normal = mult_scalar(inter->normal, -1);
+		if (vector_scalar_product(inter->normal, ray.dir) > 0)
+			inter->normal = vector_inverse(cylinder.trans);
 		op_inv(cylinder.trans, cylinder.rot, &(inter->normal), &pos);
 		inter->refl = calculate_reflection(temp, inter->normal);
 		inter->color = cylinder.color;
@@ -90,7 +90,7 @@ int				cylinder_shadow(void *obj, t_ray ray, double light_dist)
 	double		cylinder_dist;
 
 	cylinder = *((t_cylinder *)obj);
-	change_frame(&ray, cylinder.inv, mult_scalar(cylinder.trans, -1));
+	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	cylinder_dist = cylinder_distance(ray, cylinder);
 	if (cylinder_dist < 0 || cylinder_dist > light_dist - 0.001)
 		return (0);

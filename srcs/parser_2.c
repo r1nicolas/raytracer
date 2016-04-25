@@ -20,8 +20,8 @@ void			push_cam(char **line)
 	int			i;
 
 	test_object(line, 10, "camera");
-	pos = init_point(atof(line[2]), atof(line[3]), atof(line[4]));
-	u = unit_vect(atof(line[5]), atof(line[6]), atof(line[7]));
+	pos = new_vector(atof(line[2]), atof(line[3]), atof(line[4]));
+	u = new_vector_unit(atof(line[5]), atof(line[6]), atof(line[7]));
 	g_scene.cam = new_cam(pos, u, atof(line[8]), atof(line[9]));
 	i = 0;
 	while (i < 10)
@@ -34,7 +34,7 @@ void			push_spot(char **line)
 	t_light		*current;
 
 	test_object(line, 5, "spot");
-	g_scene.spot = init_point(atof(line[2]), atof(line[3]),
+	g_scene.spot = new_vector(atof(line[2]), atof(line[3]),
 							atof(line[4]));
 	current = malloc(sizeof(t_light));
 	current->spot = g_scene.spot;

@@ -83,12 +83,12 @@ int			get_color_inter(t_inter inter, t_object_list *list)
 	result = color_mult(inter.color, 0.2);
 	while (inter.light_ray_list)
 	{
-		s_prod = scalar_prod(inter.normal, inter.light_ray_list->light.dir);
+		s_prod = vector_scalar_product(inter.normal, inter.light_ray_list->light.dir);
 		if (s_prod < 0 && is_not_in_shadow(inter.pos, list,
 										   inter.light_ray_list->light))
 		{
 			diffuse = color_mult(inter.color, -0.8 * s_prod / spot_number);
-			s_prod = scalar_prod(inter.refl, inter.light_ray_list->light.dir);
+			s_prod = vector_scalar_product(inter.refl, inter.light_ray_list->light.dir);
 			specular = (s_prod > 0 ? 0 :
 				color_mult(0xFFFFFF, 0.2 * pow(s_prod, 50)));
 			result = color_add(result, diffuse);

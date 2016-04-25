@@ -35,7 +35,7 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 	t_vec		pos;
 
 	sp = *((t_sphere *)e);
-	apply_trans_inv(sp.center, &(ray.point));
+	ray.point = vector_add(sp.center, vector_inverse(ray.point));
 	t = get_dist(ray, sp);
 	if (t < 0)
 		return ;
@@ -46,10 +46,10 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 		free_light_ray_list(pt);
 		*(pt->dist) = t;
 		pos = calculate_position(ray, t);
-		pt->normal = unit_vect(pos.x, pos.y, pos.z);
-		if (scalar_prod(pt->normal, ray.dir) > 0)
-			pt->normal = mult_scalar(pt->normal, -1);
-		apply_trans(sp.center, &pos);
+		pt->normal = new_vector_unit(pos.x, pos.y, pos.z);
+		if (vector_scalar_product(pt->normal, ray.dir) > 0)
+			pt->normal = vector_inverse(pt->normal);
+		pos = vector_add(sp.center, pos);
 		create_light_ray_list(pt, light, pos);
 		pt->refl = calculate_reflection(ray, pt->normal);
 		pt->color = sp.color;
@@ -63,7 +63,7 @@ int				sh_sphere(void *e, t_ray ray, double dist)
 	double		t;
 
 	sp = *((t_sphere *)e);
-	apply_trans_inv(sp.center, &(ray.point));
+	ray.point = vector_add(sp.center, vector_inverse(ray.point));
 	t = get_dist(ray, sp);
 	if (t < 0 || t > dist - 0.001)
 		return (0);

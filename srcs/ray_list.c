@@ -21,8 +21,8 @@ void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos)
 	{
 		light_ray_list = malloc(sizeof(t_ray_list));
 		light_ray_list->light.point = light->spot;
-		light_ray_list->light.dir = unit_vect(pos.x - light->spot.x, pos.y
-			- light->spot.y, pos.z - light->spot.z);
+		light_ray_list->light.dir = new_vector_unit(pos.x - light->spot.x,
+			pos.y - light->spot.y, pos.z - light->spot.z);
 		light_ray_list->next = inter->light_ray_list;
 		inter->light_ray_list = light_ray_list;
 		light = light->next;

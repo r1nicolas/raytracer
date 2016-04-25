@@ -34,22 +34,21 @@ void			int_plane(t_inter *pt, void *e, t_ray ray, t_light *light)
 
 	plane = *((t_plane *)e);
 	t = get_dist(ray, plane);
-	if (t < 0)
-		return ;
-	if (pt->dist == NULL || *(pt->dist) > t)
+	if ((t > 0 && pt->dist == NULL )|| *(pt->dist) > t)
 	{
-		pt->normal = unit_vect(plane.a, plane.b, plane.c);
+		pt->normal = new_vector_unit(plane.a, plane.b, plane.c);
 		if (pt->dist == NULL)
 			pt->dist = malloc(sizeof(double));
 		free_light_ray_list(pt);
 		*(pt->dist) = t;
-		pos = init_point(ray.point.x + t * ray.dir.x,
+		pos = new_vector(ray.point.x + t * ray.dir.x,
 			ray.point.y + t * ray.dir.y, ray.point.z + t * ray.dir.z);
-		if (scalar_prod(pt->normal, ray.dir) > 0)
-			pt->normal = mult_scalar(pt->normal, -1);
+		if (vector_scalar_product(pt->normal, ray.dir) > 0)
+			pt->normal = vector_inverse(pt->normal);
 		create_light_ray_list(pt, light, pos);
-		pt->refl = mult_scalar(vect_add(ray.dir, mult_scalar(pt->normal,
-			-2 * (scalar_prod(pt->normal, ray.dir)))), -1);
+		pt->refl = vector_inverse(vector_add(ray.dir,
+			vector_scalar_mult(pt->normal, -2 *
+			(vector_scalar_product(pt->normal, ray.dir)))));
 		pt->color = plane.color;
 		pt->pos = pos;
 	}

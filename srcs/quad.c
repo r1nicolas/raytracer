@@ -43,7 +43,7 @@ static t_vec	get_normal_quad(t_vec pos, t_quad quad)
 {
 	t_vec		ret;
 
-	ret = unit_vect(2 * quad.a * pos.x + 2 * quad.d * pos.y + 2 * quad.e
+	ret = new_vector_unit(2 * quad.a * pos.x + 2 * quad.d * pos.y + 2 * quad.e
 			* pos.z + quad.g, 2 * quad.b * pos.y + 2 * quad.d * pos.x + 2
 			* quad.f * pos.z + quad.h, 2 * quad.c * pos.z + 2 * quad.e * pos.x
 			+ 2 * quad.e * pos.y + quad.i);
@@ -68,8 +68,8 @@ void			int_quad(t_inter *pt, void *e, t_ray ray, t_light *light)
 		*(pt->dist) = t;
 		pos = calculate_position(ray, t);
 		pt->normal = get_normal_quad(pos, quad);
-		if (scalar_prod(pt->normal, ray.dir) > 0)
-			pt->normal = mult_scalar(pt->normal, -1);
+		if (vector_scalar_product(pt->normal, ray.dir) > 0)
+			pt->normal = vector_scalar_mult(pt->normal, -1);
 		pt->refl = calculate_reflection(ray, pt->normal);
 		pt->color = quad.color;
 		pt->pos = pos;

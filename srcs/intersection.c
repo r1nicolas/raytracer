@@ -19,7 +19,7 @@
 
 t_vec		calculate_position(t_ray ray, double dist)
 {
-	return (init_point(ray.point.x + dist * ray.dir.x,
+	return (new_vector(ray.point.x + dist * ray.dir.x,
 					   ray.point.y + dist * ray.dir.y,
 					   ray.point.z + dist * ray.dir.z));
 }
@@ -33,9 +33,9 @@ t_vec		calculate_reflection(t_ray ray, t_vec normal)
 	double			scalar;
 	t_vec			u;
 
-	scalar = scalar_prod(normal, ray.dir);
-	u = mult_scalar(normal, -2 * scalar);
-	u = vect_add(ray.dir, u);
+	scalar = vector_scalar_product(normal, ray.dir);
+	u = vector_scalar_mult(normal, -2 * scalar);
+	u = vector_add(ray.dir, u);
 	return (u);
 }
 
@@ -46,9 +46,9 @@ t_vec		calculate_reflection(t_ray ray, t_vec normal)
 
 void		change_frame(t_ray *ray, double **rot, t_vec trans)
 {
-	apply_trans(trans, &(ray->point));
-	apply_rot(rot, &(ray->point));
-	apply_rot(rot, &(ray->dir));
+	ray->point = vector_add(trans, ray->point);
+	ray->point = rotation_vector(rot, ray->point);
+	ray->dir = rotation_vector(rot, ray->dir);
 }
 
 /*
@@ -64,7 +64,8 @@ int			is_not_in_shadow(t_vec inter, t_object_list *obj_list, t_ray light)
 	while (obj_list)
 	{
 		if (tab_func_shadow[obj_list->obj](obj_list->e, light, 
-										   dist_point(inter, light.point)))
+										   vector_distance(inter,
+										   				   light.point)))
 			return (0);
 		obj_list = obj_list->next;
 	}

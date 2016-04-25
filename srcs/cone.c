@@ -47,7 +47,7 @@ static t_vec	cone_normal(t_vec pos, t_cone cone)
 
 	tan_2 = tan(cone.angle);
 	tan_2 = tan_2 * tan_2;
-	normal = unit_vect(pos.x, pos.y, -tan_2 * pos.z);
+	normal = new_vector_unit(pos.x, pos.y, -tan_2 * pos.z);
 	return (normal);
 }
 
@@ -66,7 +66,7 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 
 	cone = *((t_cone *)obj);
 	temp = ray;
-	change_frame(&ray, cone.inv, mult_scalar(cone.apex, -1));
+	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	dist = cone_distance(ray, cone);
 	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
@@ -76,8 +76,8 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 		*(inter->dist) = dist;
 		pos = calculate_position(ray, dist);
 		inter->normal = cone_normal(pos, cone);
-		if (scalar_prod(inter->normal, ray.dir) > 0)
-			inter->normal = mult_scalar(inter->normal, -1);
+		if (vector_scalar_product(inter->normal, ray.dir) > 0)
+			inter->normal = vector_inverse(cone.apex);
 		op_inv(cone.apex, cone.rot, &(inter->normal), &pos);
 		inter->refl = calculate_reflection(temp, inter->normal);
 		inter->color = cone.color;
@@ -97,7 +97,7 @@ int				cone_shadow(void *obj, t_ray ray, double light_dist)
 	double		cone_dist;
 
 	cone = *((t_cone *)obj);
-	change_frame(&ray, cone.inv, mult_scalar(cone.apex, -1));
+	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	cone_dist = cone_distance(ray, cone);
 	if (cone_dist < 0 || cone_dist > light_dist - 0.001)
 		return (0);

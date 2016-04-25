@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/21 20:17:00 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/25 17:03:08 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,41 @@ int			is_not_in_shadow(t_vec inter, t_object_list *lst, t_ray light);
 
 int			is_all_num(char *str);
 
+/*
+** maths_obj.c
+*/
 
+double		**matrix_direction(t_vec u);
+double		res_equ_scnd(double a, double b, double c);
 void		op_inv(t_vec trans, double **rot, t_vec *normal, t_vec *inter);
+
+/*
+** maths_rot.c
+*/
+
+t_vec		rotation_vector(double **rot, t_vec vector);
+double		**create_rotation_matrix(double angle, t_vec ort);
+double		**matrix_inverse(double **rot);
+
+/*
+** maths_vector1.c
+*/
+
+t_vec		new_vector(double x, double y, double z);
+t_vec		new_vector_unit(double x, double y, double z);
+t_vec		vector_scalar_mult(t_vec u, double scalar);
+double		vector_distance(t_vec u, t_vec v);
+t_vec		vector_add(t_vec u, t_vec v);
+
+/*
+** maths_vector1.c
+*/
+
+double		vector_scalar_product(t_vec u, t_vec v);
+t_vec		vector_cross_product(t_vec u, t_vec v);
+double		vector_norm(t_vec a);
+t_vec		vector_inverse(t_vec v);
+
 void		create_tab_func_shadow(t_func_shadow *tab);
 void		create_tab_func_inter(t_func_inter *tab);
 void		create_tab_func_parse(t_func_parse *tab);
@@ -102,7 +135,6 @@ void		int_quad(t_inter *inter, void *e, t_ray ray, t_light *light);
 void		int_plane(t_inter *inter, void *e, t_ray ray, t_light *light);
 void		push_quad(char **line);
 int			sh_quad(void *e, t_ray ray, double dist);
-double		res_equ_scnd(double a, double b, double c);
 int			sh_sphere(void *e, t_ray ray, double dist);
 int			sh_plane(void *e, t_ray ray, double dist);
 void		get_scene(char *path);
@@ -113,22 +145,6 @@ void		push_cylinder(char **line);
 void		push_sphere(char **line);
 void		push_plane(char **line);
 void		test_object(char **line, int size, char *name);
-t_vec		vect_add(t_vec u, t_vec v);
-t_vec		mult_scalar(t_vec u, double scalar);
-t_vec		init_point(double x, double y, double z);
-double		dist_point(t_vec u, t_vec v);
-double		**get_rot(double angle, t_vec ort);
-void		init_ret(double ***ret);
-void		get_matrice(double **ret, double angle, t_vec ort);
-double		**get_rot_obj(t_vec u);
-t_vec		unit_vect(double a, double b, double c);
-void		apply_trans_inv(t_vec x, t_vec *y);
-void		apply_trans(t_vec x, t_vec *y);
-double		norm(t_vec a);
-t_vec		cross_prod(t_vec u, t_vec v);
-double		scalar_prod(t_vec u, t_vec v);
-double		**inv_mat(double **rot);
-void		apply_rot(double **rot, t_vec *vector);
 char		**ft_strsplit(char * line, char c);
 
 #endif

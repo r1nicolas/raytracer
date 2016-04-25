@@ -23,8 +23,8 @@ static void		init_default(void)
 	t_vec		pos;
 	t_vec		u;
 
-	pos = init_point(1, 1, 1);
-	u = unit_vect(-1, -1, -1);
+	pos = new_vector(1, 1, 1);
+	u = new_vector_unit(-1, -1, -1);
 	g_scene.cam = new_cam(pos, u, 1, 0);
 	g_scene.list = NULL;
 	g_scene.light = NULL;

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   maths_unit.c                                       :+:      :+:    :+:   */
+/*   maths_vector1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,44 +13,51 @@
 #include <raytracer.h>
 #include <math.h>
 
-t_vec	unit_vect(double a, double b, double c)
+/*
+** Create a vector of coordinates x, y and z.
+*/
+
+t_vec	new_vector(double x, double y, double z)
 {
-	t_vec		u;
+	t_vec	vector;
+
+	vector.x = x;
+	vector.y = y;
+	vector.z = z;
+	return (vector);
+}
+
+/*
+** Create a vector of coordinates x, y and z then normalize it.
+*/
+
+t_vec	new_vector_unit(double x, double y, double z)
+{
+	t_vec		result;
 	double		norm;
 
-	norm = sqrt(a * a + b * b + c * c);
-	if (norm)
-	{
-		u.x = a / norm;
-		u.y = b / norm;
-		u.z = c / norm;
-	}
-	else
-	{
-		u.x = 0;
-		u.y = 0;
-		u.z = 0;
-	}
-	return (u);
+	result = new_vector(x, y, z);
+	norm = vector_norm(result);
+	if (norm != 0)
+		result = vector_scalar_mult(result, 1 / norm);
+	return (result);
 }
 
-double	dist_point(t_vec u, t_vec v)
+/*
+** Return the distance between two vectors.
+*/
+
+double	vector_distance(t_vec u, t_vec v)
 {
-	apply_trans_inv(u, &v);
-	return (norm(v));
+	v = vector_add(u, vector_inverse(v));
+	return (vector_norm(v));
 }
 
-t_vec	init_point(double x, double y, double z)
-{
-	t_vec	pt;
+/*
+** Multiplies a vector by a scalar.
+*/
 
-	pt.x = x;
-	pt.y = y;
-	pt.z = z;
-	return (pt);
-}
-
-t_vec	mult_scalar(t_vec u, double scalar)
+t_vec	vector_scalar_mult(t_vec u, double scalar)
 {
 	u.x = u.x * scalar;
 	u.y = u.y * scalar;
@@ -58,7 +65,11 @@ t_vec	mult_scalar(t_vec u, double scalar)
 	return (u);
 }
 
-t_vec	vect_add(t_vec u, t_vec v)
+/*
+** Add two vectors
+*/
+
+t_vec	vector_add(t_vec u, t_vec v)
 {
 	u.x = u.x + v.x;
 	u.y = u.y + v.y;
