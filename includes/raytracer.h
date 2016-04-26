@@ -87,6 +87,7 @@ int			is_not_in_shadow(t_vec inter, t_object_list *lst, t_ray light);
 */
 
 int			is_all_num(char *str);
+int			is_all_hex(char *str);
 
 /*
 ** maths_obj.c
@@ -115,13 +116,23 @@ double		vector_distance(t_vec u, t_vec v);
 t_vec		vector_add(t_vec u, t_vec v);
 
 /*
-** maths_vector1.c
+** maths_vector2.c
 */
 
-double		vector_scalar_product(t_vec u, t_vec v);
+double		vector_dot_product(t_vec u, t_vec v);
 t_vec		vector_cross_product(t_vec u, t_vec v);
 double		vector_norm(t_vec a);
 t_vec		vector_inverse(t_vec v);
+
+/*
+** parser1.c
+*/
+
+void		create_scene(char *path);
+
+/*
+** parser2.c
+*/
 
 void		create_tab_func_shadow(t_func_shadow *tab);
 void		create_tab_func_inter(t_func_inter *tab);
@@ -137,7 +148,6 @@ void		push_quad(char **line);
 int			sh_quad(void *e, t_ray ray, double dist);
 int			sh_sphere(void *e, t_ray ray, double dist);
 int			sh_plane(void *e, t_ray ray, double dist);
-void		get_scene(char *path);
 void		push_spot(char **line);
 void		push_cam(char **line);
 void		push_cone(char **line);

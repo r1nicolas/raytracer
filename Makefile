@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/25 19:30:21 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/04/26 19:52:09 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -21,17 +21,17 @@ SRCDIR = ./srcs/
 OBJDIR = ./objs/
 
 SRC =	main.c \
+		parser1.c \
+		parser2.c \
+		parser3.c \
 		tab_func.c \
 		ray_list.c \
-		quad.c \
-		parse_scene.c \
 		error.c \
-		parser_1.c \
-		parser_2.c \
-		cone.c \
 		intersection.c \
+		cone.c \
 		cylinder.c \
 		plane.c \
+		quad.c \
 		sphere.c \
 		maths_obj.c \
 		maths_vector1.c \

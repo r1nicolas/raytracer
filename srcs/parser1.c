@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_scene.c                                      :+:      :+:    :+:   */
+/*   parser1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,10 +18,14 @@
 
 struct s_scene	g_scene;
 
-static void		init_default(void)
+/*
+** Initialize the scene.
+*/
+
+static void		init_scene(void)
 {
-	t_vec		pos;
-	t_vec		u;
+	t_vec			pos;
+	t_vec			u;
 
 	pos = new_vector(1, 1, 1);
 	u = new_vector_unit(-1, -1, -1);
@@ -30,28 +34,43 @@ static void		init_default(void)
 	g_scene.light = NULL;
 }
 
-static void		is_valid(char **line)
+/*
+** Verify if the given line is valid according to the format.
+** Write an error message and quit the program otherwise.
+*/
+
+static void		is_valid(char **split)
 {
-	char	*tab_type[7];
-	int		i;
+	char			*tab_type[7];
+	int				i;
 
 	create_tab_type(tab_type);
-	if (line != NULL)
+	if (strcmp(split[0], ">") != 0)
 	{
-		if (strcmp(line[0], ">") != 0)
-			put_error("format error\n");
-		i = 0;
-		while (i < 7 && line[1])
+		write(2, "parse error near ", 17);
+		write(2, split[0], strlen(split[0]));
+		put_error("\n");
+	}
+	i = 0;
+	if (split[1])
+	{
+		while (i < 7)
 		{
-			if (!strcmp(tab_type[i], line[1]))
+			if (strcmp(tab_type[i], split[1]) == 0)
 				return ;
 			i++;
 		}
-		put_error("name error\n");
+		write(2, "parse error near ", 17);
+		write(2, split[1], strlen(split[1]));
+		put_error("\n");
 	}
 }
 
-static void		get_params(char **line)
+/*
+** Parse a line.
+*/
+
+static void		parse_line(char **split)
 {
 	t_func_parse	tab_func_parse[7];
 	char			*tab_type[7];
@@ -62,31 +81,41 @@ static void		get_params(char **line)
 	i = 0;
 	while (i < 7)
 	{
-		if (strcmp(tab_type[i], line[1]) == 0)
-			tab_func_parse[i](line);
+		if (strcmp(tab_type[i], split[1]) == 0)
+			tab_func_parse[i](split);
 		i++;
 	}
 }
 
-static void		is_dir(char *path)
+/*
+** Open the file given in parameter quit in case of invalide file or error.
+*/
+
+static int		open_file(char *path)
 {
-	struct stat	file_st;
+	struct stat		file_st;
+	int				fd;
 
 	if (stat(path, &file_st) == 0 && S_ISDIR(file_st.st_mode))
 		put_error("directory is not a valid scene.\n");
-}
-
-void			get_scene(char *path)
-{
-	int			fd;
-	char		**split;
-	char		*line;
-	int			ret;
-
-	init_default();
-	is_dir(path);
 	if ((fd = open(path, O_RDONLY)) == -1)
 		put_error("can't access to the file.\n");
+	return(fd);
+}
+
+/*
+** Create the scene using the file given in parameter.
+*/
+
+void			create_scene(char *path)
+{
+	int				fd;
+	char			**split;
+	char			*line;
+	int				ret;
+
+	init_scene();
+	fd = open_file(path);
 	ret = 1;
 	while (ret)
 	{
@@ -96,7 +125,7 @@ void			get_scene(char *path)
 			if (line[0] != '#' && (split = ft_strsplit(line, ' ')) != NULL)
 			{
 				is_valid(split);
-				get_params(split);
+				parse_line(split);
 				free(split);
 			}
 			free(line);

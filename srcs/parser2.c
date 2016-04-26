@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_1.c                                         :+:      :+:    :+:   */
+/*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,25 +15,33 @@
 #include <string.h>
 #include <unistd.h>
 
+/*
+** Test if an object is valid.
+*/
+
 void			test_object(char **line, int size, char *name)
 {
 	int		i;
 
-	i = 0;
-	while (line[i] != NULL)
+	i = 2;
+	while (i < size - 1 && line[i] != NULL)
 	{
-		if (i > 1 && i + 1 < size && !is_all_num(line[i]))
+		if (!is_all_num(line[i]))
 		{
 			write(2, name, strlen(name));
-			put_error(": wrong argument type\n");
+			put_error(": wrong type of argument\n");
 		}
 		i++;
 	}
-	if (i != size)
+	if (line[i] != NULL && !is_all_hex(line[i]))
 	{
 		write(2, name, strlen(name));
-		write(2, ": wrong argument", 16);
-		put_error(" number\n");
+		put_error(": wrong type of argument\n");
+	}
+	if (line[i] != NULL && line[i + 1] != NULL)
+	{
+		write(2, name, strlen(name));
+		put_error(": wrong number of arguments\n");
 	}
 }
 

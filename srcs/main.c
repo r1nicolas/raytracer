@@ -6,7 +6,7 @@
 /*   By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#             */
-/*   Updated: 2016/04/18 17:53:18 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/04/26 20:10:31 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		main(int ac, char **av)
 	if (ac != 2)
 		put_error("usage: ./raytracer scene\n");
 	pixels = (int *)malloc(WINROW * WINCOL * sizeof(int));
-	get_scene(av[1]);
+	create_scene(av[1]);
 	SDL_Init(SDL_INIT_VIDEO);
 	if (!(window = SDL_CreateWindow("Raytracer",
 									SDL_WINDOWPOS_UNDEFINED,

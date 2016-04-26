@@ -47,7 +47,7 @@ void			int_sphere(t_inter *pt, void *e, t_ray ray, t_light *light)
 		*(pt->dist) = t;
 		pos = calculate_position(ray, t);
 		pt->normal = new_vector_unit(pos.x, pos.y, pos.z);
-		if (vector_scalar_product(pt->normal, ray.dir) > 0)
+		if (vector_dot_product(pt->normal, ray.dir) > 0)
 			pt->normal = vector_inverse(pt->normal);
 		pos = vector_add(sp.center, pos);
 		create_light_ray_list(pt, light, pos);

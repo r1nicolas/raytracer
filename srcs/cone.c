@@ -76,7 +76,7 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 		*(inter->dist) = dist;
 		pos = calculate_position(ray, dist);
 		inter->normal = cone_normal(pos, cone);
-		if (vector_scalar_product(inter->normal, ray.dir) > 0)
+		if (vector_dot_product(inter->normal, ray.dir) > 0)
 			inter->normal = vector_inverse(cone.apex);
 		op_inv(cone.apex, cone.rot, &(inter->normal), &pos);
 		inter->refl = calculate_reflection(temp, inter->normal);

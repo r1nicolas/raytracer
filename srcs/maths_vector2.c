@@ -13,10 +13,18 @@
 #include <raytracer.h>
 #include <math.h>
 
-double			vector_scalar_product(t_vec u, t_vec v)
+/*
+** Return the dot product of two vector.
+*/
+
+double			vector_dot_product(t_vec u, t_vec v)
 {
 	return (u.x * v.x + u.y * v.y + u.z * v.z);
 }
+
+/*
+** Return the cross product of two vector.
+*/
 
 t_vec			vector_cross_product(t_vec u, t_vec v)
 {
@@ -32,10 +40,18 @@ t_vec			vector_cross_product(t_vec u, t_vec v)
 	return (result);
 }
 
+/*
+** Return the norm of a vector.
+*/
+
 double			vector_norm(t_vec a)
 {
 	return (sqrt(a.x * a.x + a.y * a.y + a.z * a.z));
 }
+
+/*
+** Return the inverse of a vector.
+*/
 
 t_vec			vector_inverse(t_vec v)
 {

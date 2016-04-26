@@ -33,7 +33,7 @@ t_vec		calculate_reflection(t_ray ray, t_vec normal)
 	double			scalar;
 	t_vec			u;
 
-	scalar = vector_scalar_product(normal, ray.dir);
+	scalar = vector_dot_product(normal, ray.dir);
 	u = vector_scalar_mult(normal, -2 * scalar);
 	u = vector_add(ray.dir, u);
 	return (u);

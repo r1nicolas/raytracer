@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_2.c                                         :+:      :+:    :+:   */
+/*   parser3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,6 +12,28 @@
 
 #include <raytracer.h>
 #include <stdlib.h>
+#include <string.h>
+
+static void		test_camera_spot(char **line, int size, char *name)
+{
+	int		i;
+
+	i = 2;
+	while (i < size && line[i] != NULL)
+	{
+		if (!is_all_num(line[i]))
+		{
+			write(2, name, strlen(name));
+			put_error(": wrong type of argument\n");
+		}
+		i++;
+	}
+	if (line[i] != NULL && line[i + 1] != NULL)
+	{
+		write(2, name, strlen(name));
+		put_error(": wrong number of arguments\n");
+	}
+}
 
 void			push_cam(char **line)
 {
@@ -19,7 +41,7 @@ void			push_cam(char **line)
 	t_vec		u;
 	int			i;
 
-	test_object(line, 10, "camera");
+	test_camera_spot(line, 10, "camera");
 	pos = new_vector(atof(line[2]), atof(line[3]), atof(line[4]));
 	u = new_vector_unit(atof(line[5]), atof(line[6]), atof(line[7]));
 	g_scene.cam = new_cam(pos, u, atof(line[8]), atof(line[9]));
@@ -33,7 +55,7 @@ void			push_spot(char **line)
 	int			i;
 	t_light		*current;
 
-	test_object(line, 5, "spot");
+	test_camera_spot(line, 5, "spot");
 	g_scene.spot = new_vector(atof(line[2]), atof(line[3]),
 							atof(line[4]));
 	current = malloc(sizeof(t_light));

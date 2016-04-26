@@ -68,7 +68,7 @@ void			int_quad(t_inter *pt, void *e, t_ray ray, t_light *light)
 		*(pt->dist) = t;
 		pos = calculate_position(ray, t);
 		pt->normal = get_normal_quad(pos, quad);
-		if (vector_scalar_product(pt->normal, ray.dir) > 0)
+		if (vector_dot_product(pt->normal, ray.dir) > 0)
 			pt->normal = vector_scalar_mult(pt->normal, -1);
 		pt->refl = calculate_reflection(ray, pt->normal);
 		pt->color = quad.color;
