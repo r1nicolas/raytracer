@@ -88,7 +88,7 @@ static void	sub_fill_it(char const *s, char **result, char c, size_t size)
 	}
 }
 
-char		**ft_strsplit(char const *s, char c)
+char		**strsplit(char const *s, char c)
 {
 	char	**result;
 	size_t	count;

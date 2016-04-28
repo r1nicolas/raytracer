@@ -43,6 +43,7 @@ typedef struct				s_sphere
 	t_vec					center;
 	double					radius;
 	int						color;
+	double					refl;
 }							t_sphere;
 
 typedef struct				s_plane
@@ -52,6 +53,7 @@ typedef struct				s_plane
 	double					c;
 	double					d;
 	int						color;
+	double					refl;
 }							t_plane;
 
 typedef struct				s_cylinder
@@ -61,6 +63,7 @@ typedef struct				s_cylinder
 	t_vec					trans;
 	double					radius;
 	int						color;
+	double					refl;
 }							t_cylinder;
 
 typedef struct				s_cone
@@ -70,6 +73,7 @@ typedef struct				s_cone
 	t_vec					apex;
 	double					angle;
 	int						color;
+	double					refl;
 }							t_cone;
 
 typedef struct				s_ray
@@ -102,6 +106,7 @@ typedef struct				s_inter
 	t_vec					refl;
 	t_vec					pos;
 	int						color;
+	double					ref_val;
 }							t_inter;
 
 typedef struct				s_light
@@ -133,6 +138,7 @@ typedef struct				s_quad
 	double					i;
 	double					j;
 	int						color;
+	double					refl;
 }							t_quad;
 
 typedef struct				s_buff

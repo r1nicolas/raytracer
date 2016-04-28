@@ -13,12 +13,16 @@
 #include <raytracer.h>
 #include <stdlib.h>
 
-static double	get_dist(t_ray ray, t_quad quad)
+/*
+** Return the distance to the quadric from the screen using a ray.
+*/
+
+static double	quadric_distance(t_ray ray, t_quad quad)
 {
 	double	a;
 	double	b;
 	double	c;
-	double	t;
+	double	dist;
 
 	a = quad.a * ray.dir.x * ray.dir.x + quad.b * ray.dir.y * ray.dir.y
 		+ quad.c * ray.dir.z * ray.dir.z + 2 * quad.d * ray.dir.x * ray.dir.y
@@ -35,11 +39,15 @@ static double	get_dist(t_ray ray, t_quad quad)
 		* ray.point.y + 2 * quad.e * ray.point.x * ray.point.z + 2 * quad.f
 		* ray.point.y * ray.point.z + quad.g * ray.point.x + quad.h
 		* ray.point.y + quad.i * ray.point.z + quad.j;
-	t = res_equ_scnd(a, b, c);
-	return (t);
+	dist = res_equ_scnd(a, b, c);
+	return (dist);
 }
 
-static t_vec	get_normal_quad(t_vec pos, t_quad quad)
+/*
+** Return the normal to the quadric in the position pos.
+*/
+
+static t_vec	quadric_normal(t_vec pos, t_quad quad)
 {
 	t_vec		ret;
 
@@ -50,41 +58,50 @@ static t_vec	get_normal_quad(t_vec pos, t_quad quad)
 	return (ret);
 }
 
-void			int_quad(t_inter *pt, void *e, t_ray ray, t_light *light)
+/*
+** Fill the information of the inter structure if the object obj is closer than
+** the previous object or if it is the first object. 
+*/
+
+void			quadric_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 {
 	t_quad		quad;
-	double		t;
+	double		dist;
 	t_vec		pos;
 
-	quad = *((t_quad *)e);
-	t = get_dist(ray, quad);
-	if (t < 0)
-		return ;
-	if (pt->dist == NULL || *(pt->dist) > t)
+	quad = *((t_quad *)obj);
+	dist = quadric_distance(ray, quad);
+	if (dist > 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
-		if (pt->dist == NULL)
-			pt->dist = malloc(sizeof(double));
-		free_light_ray_list(pt);
-		*(pt->dist) = t;
-		pos = calculate_position(ray, t);
-		pt->normal = get_normal_quad(pos, quad);
-		if (vector_dot_product(pt->normal, ray.dir) > 0)
-			pt->normal = vector_scalar_mult(pt->normal, -1);
-		pt->refl = calculate_reflection(ray, pt->normal);
-		pt->color = quad.color;
-		pt->pos = pos;
-		create_light_ray_list(pt, light, pos);
+		if (inter->dist == NULL)
+			inter->dist = malloc(sizeof(double));
+		free_light_ray_list(inter);
+		*(inter->dist) = dist;
+		pos = calculate_position(ray, dist);
+		inter->normal = quadric_normal(pos, quad);
+		if (vector_dot_product(inter->normal, ray.dir) > 0)
+			inter->normal = vector_scalar_mult(inter->normal, -1);
+		inter->refl = calculate_reflection(ray, inter->normal);
+		inter->color = quad.color;
+		inter->pos = pos;
+		create_light_ray_list(inter, light, pos);
+		inter->ref_val = quad.refl;
 	}
 }
 
-int				sh_quad(void *e, t_ray ray, double dist)
+/*
+** Return if the object obj cast a shadow on the ray position, light_dist is
+** the distance of the light source.
+*/
+
+int				quadric_shadow(void *obj, t_ray ray, double light_dist)
 {
 	t_quad		quad;
-	double		t;
+	double		quad_dist;
 
-	quad = *((t_quad *)e);
-	t = get_dist(ray, quad);
-	if (t < 0 || t > dist - 0.001)
+	quad = *((t_quad *)obj);
+	quad_dist = quadric_distance(ray, quad);
+	if (quad_dist < 0 || quad_dist > light_dist - 0.001)
 		return (0);
 	return (1);
 }

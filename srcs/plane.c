@@ -14,7 +14,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-static double	get_dist(t_ray ray, t_plane plane)
+/*
+** Return the distance to the plane from the screen using a ray.
+*/
+
+static double	plane_distance(t_ray ray, t_plane plane)
 {
 	double		t;
 
@@ -26,42 +30,63 @@ static double	get_dist(t_ray ray, t_plane plane)
 	return (t);
 }
 
-void			int_plane(t_inter *pt, void *e, t_ray ray, t_light *light)
+/*
+** Return the normal to the plane in the position pos.
+*/
+
+static t_vec	plane_normal(t_vec pos, t_plane plane)
+{
+	t_vec normal;
+
+	(void)pos;
+	normal = new_vector_unit(plane.a, plane.b, plane.c);
+	return (normal);
+}
+
+/*
+** Fill the information of the inter structure if the object obj is closer than
+** the previous object or if it is the first object. 
+*/
+
+void			plane_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 {
 	t_plane		plane;
-	double		t;
+	double		dist;
 	t_vec		pos;
 
-	plane = *((t_plane *)e);
-	t = get_dist(ray, plane);
-	if ((t > 0 && pt->dist == NULL )|| *(pt->dist) > t)
+	plane = *((t_plane *)obj);
+	dist = plane_distance(ray, plane);
+	if (dist > 0 && (inter->dist == NULL || dist < *(inter->dist)))
 	{
-		pt->normal = new_vector_unit(plane.a, plane.b, plane.c);
-		if (pt->dist == NULL)
-			pt->dist = malloc(sizeof(double));
-		free_light_ray_list(pt);
-		*(pt->dist) = t;
-		pos = new_vector(ray.point.x + t * ray.dir.x,
-			ray.point.y + t * ray.dir.y, ray.point.z + t * ray.dir.z);
-		if (vector_dot_product(pt->normal, ray.dir) > 0)
-			pt->normal = vector_inverse(pt->normal);
-		create_light_ray_list(pt, light, pos);
-		pt->refl = vector_inverse(vector_add(ray.dir,
-			vector_scalar_mult(pt->normal, -2 *
-			(vector_dot_product(pt->normal, ray.dir)))));
-		pt->color = plane.color;
-		pt->pos = pos;
+		if (inter->dist == NULL)
+			inter->dist = malloc(sizeof(double));
+		free_light_ray_list(inter);
+		*(inter->dist) = dist;
+		pos = calculate_position(ray, dist);
+		inter->normal = plane_normal(inter->pos, plane);
+		if (vector_dot_product(inter->normal, ray.dir) > 0)
+			inter->normal = vector_inverse(inter->normal);
+		create_light_ray_list(inter, light, pos);
+		inter->refl = calculate_reflection(ray, inter->normal);
+		inter->color = plane.color;
+		inter->pos = pos;
+		inter->ref_val = plane.refl;
 	}
 }
 
-int				sh_plane(void *e, t_ray ray, double dist)
+/*
+** Return if the object obj cast a shadow on the ray position, light_dist is
+** the distance of the light source.
+*/
+
+int				plane_shadow(void *obj, t_ray ray, double light_dist)
 {
 	t_plane		plane;
-	double		t;
+	double		plane_dist;
 
-	plane = *((t_plane *)e);
-	t = get_dist(ray, plane);
-	if (t < 0 || t > dist - 0.001)
+	plane = *((t_plane *)obj);
+	plane_dist = plane_distance(ray, plane);
+	if (plane_dist < 0 || plane_dist > light_dist - 0.001)
 		return (0);
 	return (1);
 }

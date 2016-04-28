@@ -13,6 +13,11 @@
 #include <raytracer.h>
 #include <stdlib.h>
 
+/*
+** Create a light ray list and put it in the inter structure, light is the
+** list of light spot.
+*/
+
 void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos)
 {
 	t_ray_list		*light_ray_list;
@@ -29,6 +34,10 @@ void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos)
 	}
 }
 
+/*
+** free a light_ray_list.
+*/
+
 void		free_light_ray_list(t_inter *inter)
 {
 	t_ray_list	*light_ray_list;
@@ -40,6 +49,10 @@ void		free_light_ray_list(t_inter *inter)
 		inter->light_ray_list = light_ray_list;
 	}
 }
+
+/*
+** Return the number of element in a light_ray_list.
+*/
 
 int			count_light(t_ray_list *light_ray_list)
 {

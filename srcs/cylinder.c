@@ -76,6 +76,7 @@ void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
 		inter->color = cylinder.color;
 		inter->pos = pos;
 		create_light_ray_list(inter, light, pos);
+		inter->ref_val = cylinder.refl;
 	}
 }
 

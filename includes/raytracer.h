@@ -38,8 +38,7 @@ t_ray		new_ray(int x, int y, t_cam cam);
 ** color.c
 */
 
-int			get_color_inter(t_inter inter, t_object_list *list);
-int			get_color(t_ray ray, t_scene sc);
+int			get_color(t_ray ray, t_scene sc, int n);
 
 /*
 ** cone.c
@@ -134,27 +133,63 @@ void		create_scene(char *path);
 ** parser2.c
 */
 
-void		create_tab_func_shadow(t_func_shadow *tab);
-void		create_tab_func_inter(t_func_inter *tab);
-void		create_tab_func_parse(t_func_parse *tab);
-void		create_tab_type(char **tab);
-int			count_light(t_ray_list *light_ray_list);
-void		free_light_ray_list(t_inter *inter);
-void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos);
-void		int_sphere(t_inter *inter, void *e, t_ray ray, t_light *light);
-void		int_quad(t_inter *inter, void *e, t_ray ray, t_light *light);
-void		int_plane(t_inter *inter, void *e, t_ray ray, t_light *light);
-void		push_quad(char **line);
-int			sh_quad(void *e, t_ray ray, double dist);
-int			sh_sphere(void *e, t_ray ray, double dist);
-int			sh_plane(void *e, t_ray ray, double dist);
-void		push_spot(char **line);
-void		push_cam(char **line);
-void		push_cone(char **line);
-void		push_cylinder(char **line);
-void		push_sphere(char **line);
-void		push_plane(char **line);
 void		test_object(char **line, int size, char *name);
-char		**ft_strsplit(char * line, char c);
+void		parse_plane(char **line);
+void		parse_sphere(char **line);
+void		parse_cylinder(char **line);
+void		parse_cone(char **line);
+
+/*
+** parser3.c
+*/
+
+void		parse_camera(char **line);
+void		parse_spot(char **line);
+void		parse_quadric(char **line);
+
+/*
+** plane.c
+*/
+
+void		plane_inter(t_inter *inter, void *obj, t_ray ray, t_light *light);
+int			plane_shadow(void *e, t_ray ray, double light_dist);
+
+/*
+** quadric.c
+*/
+
+void		quadric_inter(t_inter *inter, void *obj, t_ray ray, t_light *light);
+int			quadric_shadow(void *obj, t_ray ray, double light_dist);
+
+/*
+** ray_list.c 
+*/
+
+void		create_light_ray_list(t_inter *inter, t_light *light, t_vec pos);
+void		free_light_ray_list(t_inter *inter);
+int			count_light(t_ray_list *light_ray_list);
+
+/*
+** sphere.c
+*/
+
+void		sphere_inter(t_inter *inter, void *obj, t_ray ray, t_light *light);
+int			sphere_shadow(void *obj, t_ray ray, double light_dist);
+
+
+/*
+** strsplit.c
+*/
+
+char		**strsplit(char * line, char c);
+
+/*
+** tab_func.c
+*/
+
+void		create_tab_type(char **tab);
+void		create_tab_func_parse(t_func_parse *tab);
+void		create_tab_func_inter(t_func_inter *tab);
+void		create_tab_func_shadow(t_func_shadow *tab);
 
 #endif

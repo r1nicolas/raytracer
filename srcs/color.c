@@ -71,7 +71,7 @@ static int	color_add(int color1, int color2)
 ** get the color at the intersection "inter" using the object list "list"
 */
 
-int			get_color_inter(t_inter inter, t_object_list *list)
+static int	get_color_inter(t_inter inter, t_object_list *list)
 {
 	int		result;
 	int		diffuse;
@@ -99,18 +99,20 @@ int			get_color_inter(t_inter inter, t_object_list *list)
 	return (result);
 }
 
-
 /*
 ** Return the color that appears on the screen using a ray.
 */
 
-int			get_color(t_ray ray, t_scene sc)
+int			get_color(t_ray ray, t_scene sc, int n)
 {
 	t_inter			inter;
 	t_object_list	*list;
 	int				color;
+/*	int				refl;
+	t_ray			ray_refl;*/
 	t_func_inter	tab_func_inter[5];
 
+	(void)n;
 	create_tab_func_inter(tab_func_inter);
 	list = sc.list;
 	inter.dist = NULL;
@@ -125,6 +127,15 @@ int			get_color(t_ray ray, t_scene sc)
 	else
 	{
 		color = get_color_inter(inter, sc.list);
+/*		if (n < 6 && inter.ref_val > 0)
+		{
+			ray_refl.point = inter.pos;
+			ray_refl.dir = inter.refl;
+			refl = get_color(ray_refl, sc, n + 1);
+			refl = color_mult(refl, inter.ref_val);
+			color = color_mult(color, 1 - inter.ref_val);
+			color = color_add(color, refl);
+		}*/
 		free(inter.dist);
 		free_light_ray_list(&inter);
 		return (color);

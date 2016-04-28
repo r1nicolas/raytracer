@@ -53,7 +53,7 @@ int		main(int ac, char **av)
 		while (j < WINROW)
 		{
 			ray = new_ray(i, j, g_scene.cam);
-			pixels[j * WINCOL + i] = get_color(ray, g_scene);
+			pixels[j * WINCOL + i] = get_color(ray, g_scene, 0);
 			j++;
 		}
 		i++;

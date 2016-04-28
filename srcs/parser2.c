@@ -38,29 +38,36 @@ void			test_object(char **line, int size, char *name)
 		write(2, name, strlen(name));
 		put_error(": wrong type of argument\n");
 	}
-	if (line[i] != NULL && line[i + 1] != NULL)
+	if (line[i] == NULL || line[i + 1] != NULL)
 	{
 		write(2, name, strlen(name));
 		put_error(": wrong number of arguments\n");
 	}
 }
 
-void			push_plane(char **line)
+/*
+** Parse data that represent a plane.
+*/
+
+void			parse_plane(char **line)
 {
 	t_plane			*elem;
 	t_object_list	*e;
 	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
-	test_object(line, 7, "plane");
+	test_object(line, 8, "plane");
 	elem = (t_plane*)malloc(sizeof(t_plane));
 	elem->a = atof(line[2]);
 	elem->b = atof(line[3]);
 	elem->c = atof(line[4]);
 	elem->d = atof(line[5]);
-	elem->color = (int)strtol(line[6], NULL, 16);
+	elem->refl = atof(line[6]) / 100;
+	elem->refl = (elem->refl > 1 ? 1: elem->refl);
+	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->color = (int)strtol(line[7], NULL, 16);
 	i = 0;
-	while (i < 7)
+	while (i < 8)
 		free(line[i++]);
 	e->obj = plane;
 	e->e = elem;
@@ -68,21 +75,28 @@ void			push_plane(char **line)
 	g_scene.list = e;
 }
 
-void			push_sphere(char **line)
+/*
+** Parse data that represent a sphere.
+*/
+
+void			parse_sphere(char **line)
 {
 	t_sphere		*elem;
 	int				i;
 	t_object_list	*e;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
-	test_object(line, 7, "sphere");
+	test_object(line, 8, "sphere");
 	elem = (t_sphere*)malloc(sizeof(t_sphere));
 	elem->center = new_vector(atof(line[2]), atof(line[3]),
 								atof(line[4]));
 	elem->radius = atof(line[5]);
-	elem->color = strtol(line[6], NULL, 16);
+	elem->refl = atof(line[6]) / 100;
+	elem->refl = (elem->refl > 1 ? 1: elem->refl);
+	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->color = strtol(line[7], NULL, 16);
 	i = 0;
-	while (i < 7)
+	while (i < 8)
 		free(line[i++]);
 	e->obj = sphere;
 	e->e = elem;
@@ -90,14 +104,19 @@ void			push_sphere(char **line)
 	g_scene.list = e;
 }
 
-void			push_cylinder(char **line)
+/*
+** Parse data that represent a cylinder.
+*/
+
+
+void			parse_cylinder(char **line)
 {
 	t_cylinder		*elem;
 	t_object_list	*e;
 	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
-	test_object(line, 10, "cylinder");
+	test_object(line, 11, "cylinder");
 	elem = (t_cylinder*)malloc(sizeof(t_cylinder));
 	elem->rot = matrix_direction(new_vector_unit(atof(line[2]), atof(line[3]),
 								atof(line[4])));
@@ -105,9 +124,12 @@ void			push_cylinder(char **line)
 	elem->trans = new_vector(atof(line[5]), atof(line[6]),
 							atof(line[7]));
 	elem->radius = atof(line[8]);
-	elem->color = strtol(line[9], NULL, 16);
+	elem->refl = atof(line[9]) / 100;
+	elem->refl = (elem->refl > 1 ? 1: elem->refl);
+	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->color = strtol(line[10], NULL, 16);
 	i = 0;
-	while (i < 10)
+	while (i < 11)
 		free(line[i++]);
 	e->obj = cylinder;
 	e->e = elem;
@@ -115,14 +137,18 @@ void			push_cylinder(char **line)
 	g_scene.list = e;
 }
 
-void			push_cone(char **line)
+/*
+** Parse data that represent a cone.
+*/
+
+void			parse_cone(char **line)
 {
 	t_cone			*elem;
 	t_object_list	*e;
 	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
-	test_object(line, 10, "cone");
+	test_object(line, 11, "cone");
 	elem = (t_cone*)malloc(sizeof(t_cone));
 	elem->rot = matrix_direction(new_vector_unit(atof(line[2]), atof(line[3]),
 								atof(line[4])));
@@ -130,9 +156,12 @@ void			push_cone(char **line)
 	elem->apex = new_vector(atof(line[5]), atof(line[6]),
 							atof(line[7]));
 	elem->angle = atof(line[8]);
-	elem->color = (int)strtol(line[9], NULL, 16);
+	elem->refl = atof(line[9]) / 100;
+	elem->refl = (elem->refl > 1 ? 1: elem->refl);
+	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->color = (int)strtol(line[10], NULL, 16);
 	i = 0;
-	while (i < 10)
+	while (i < 11)
 		free(line[i++]);
 	e->obj = cone;
 	e->e = elem;

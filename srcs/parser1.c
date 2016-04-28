@@ -122,7 +122,7 @@ void			create_scene(char *path)
 		ret = get_next_line(fd, &line);
 		if (line != NULL)
 		{
-			if (line[0] != '#' && (split = ft_strsplit(line, ' ')) != NULL)
+			if (line[0] != '#' && (split = strsplit(line, ' ')) != NULL)
 			{
 				is_valid(split);
 				parse_line(split);

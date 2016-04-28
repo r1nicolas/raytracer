@@ -14,6 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+** Test if the data represents a valid spot a a valid camera. 
+*/
+
 static void		test_camera_spot(char **line, int size, char *name)
 {
 	int		i;
@@ -35,7 +39,11 @@ static void		test_camera_spot(char **line, int size, char *name)
 	}
 }
 
-void			push_cam(char **line)
+/*
+** Parse data that represent a camera.
+*/
+
+void			parse_camera(char **line)
 {
 	t_vec		pos;
 	t_vec		u;
@@ -50,7 +58,11 @@ void			push_cam(char **line)
 		free(line[i++]);
 }
 
-void			push_spot(char **line)
+/*
+** Parse data that represent a spot.
+*/
+
+void			parse_spot(char **line)
 {
 	int			i;
 	t_light		*current;
@@ -67,14 +79,18 @@ void			push_spot(char **line)
 		free(line[i++]);
 }
 
-void			push_quad(char **line)
+/*
+** Parse data that represent a qudric.
+*/
+
+void			parse_quadric(char **line)
 {
 	t_quad			*elem;
 	t_object_list	*e;
 	int				i;
 
+	test_object(line, 14, "quadric");
 	e = (t_object_list*)malloc(sizeof(t_object_list));
-	test_object(line, 13, "quadric");
 	elem = (t_quad*)malloc(sizeof(t_quad));
 	elem->a = atof(line[2]);
 	elem->b = atof(line[3]);
@@ -86,9 +102,12 @@ void			push_quad(char **line)
 	elem->h = atof(line[9]);
 	elem->i = atof(line[10]);
 	elem->j = atof(line[11]);
-	elem->color = (int)strtol(line[12], NULL, 16);
+	elem->refl = atof(line[12]) / 100;
+	elem->refl = (elem->refl > 1 ? 1: elem->refl);
+	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->color = (int)strtol(line[13], NULL, 16);
 	i = 0;
-	while (i < 13)
+	while (i < 14)
 		free(line[i++]);
 	e->obj = quad;
 	e->e = elem;

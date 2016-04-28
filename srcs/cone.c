@@ -83,6 +83,7 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 		inter->color = cone.color;
 		inter->pos = pos;
 		create_light_ray_list(inter, light, pos);
+		inter->ref_val = cone.refl;
 	}
 }
 
