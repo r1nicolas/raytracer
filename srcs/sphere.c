@@ -59,7 +59,7 @@ void			sphere_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 	sphere = *((t_sphere *)obj);
 	ray.point = vector_add(ray.point, vector_inverse(sphere.center));
 	dist = sphere_distance(ray, sphere);
-	if (dist > 0 && (inter->dist == NULL || dist < *(inter->dist)))
+	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
@@ -86,12 +86,12 @@ void			sphere_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 int				sphere_shadow(void *obj, t_ray ray, double light_dist)
 {
 	t_sphere	sphere;
-	double		dist;
+	double		sphere_dist;
 
 	sphere = *((t_sphere *)obj);
 	ray.point = vector_add(sphere.center, vector_inverse(ray.point));
-	dist = sphere_distance(ray, sphere);
-	if (dist < 0 || dist > light_dist - 0.001)
+	sphere_dist = sphere_distance(ray, sphere);
+	if (sphere_dist < EPSILON || sphere_dist > light_dist - EPSILON)
 		return (0);
 	return (1);
 }

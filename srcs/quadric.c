@@ -71,7 +71,7 @@ void			quadric_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 
 	quad = *((t_quad *)obj);
 	dist = quadric_distance(ray, quad);
-	if (dist > 0 && (inter->dist == NULL || dist < *(inter->dist)))
+	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
@@ -101,7 +101,7 @@ int				quadric_shadow(void *obj, t_ray ray, double light_dist)
 
 	quad = *((t_quad *)obj);
 	quad_dist = quadric_distance(ray, quad);
-	if (quad_dist < 0 || quad_dist > light_dist - 0.001)
+	if (quad_dist < EPSILON || quad_dist > light_dist - EPSILON)
 		return (0);
 	return (1);
 }

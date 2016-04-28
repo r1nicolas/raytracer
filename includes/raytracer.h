@@ -19,6 +19,8 @@
 # define BUFF_SIZE 512
 # define DELIM_CHAR '\n'
 
+# define EPSILON 0.001
+
 # include "structures.h"
 
 

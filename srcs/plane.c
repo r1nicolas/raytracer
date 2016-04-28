@@ -56,7 +56,7 @@ void			plane_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
 
 	plane = *((t_plane *)obj);
 	dist = plane_distance(ray, plane);
-	if (dist > 0 && (inter->dist == NULL || dist < *(inter->dist)))
+	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
@@ -86,7 +86,7 @@ int				plane_shadow(void *obj, t_ray ray, double light_dist)
 
 	plane = *((t_plane *)obj);
 	plane_dist = plane_distance(ray, plane);
-	if (plane_dist < 0 || plane_dist > light_dist - 0.001)
+	if (plane_dist < EPSILON || plane_dist > light_dist - EPSILON)
 		return (0);
 	return (1);
 }

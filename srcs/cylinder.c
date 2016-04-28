@@ -61,7 +61,7 @@ void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
 	temp = ray;
 	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	dist = cylinder_distance(ray, cylinder);
-	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
+	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
@@ -93,7 +93,7 @@ int				cylinder_shadow(void *obj, t_ray ray, double light_dist)
 	cylinder = *((t_cylinder *)obj);
 	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	cylinder_dist = cylinder_distance(ray, cylinder);
-	if (cylinder_dist < 0 || cylinder_dist > light_dist - 0.001)
+	if (cylinder_dist < EPSILON || cylinder_dist > light_dist - EPSILON)
 		return (0);
 	return (1);
 }

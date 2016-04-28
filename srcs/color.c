@@ -71,23 +71,25 @@ static int	color_add(int color1, int color2)
 ** get the color at the intersection "inter" using the object list "list"
 */
 
-static int	get_color_inter(t_inter inter, t_object_list *list)
+static int	get_color_inter(t_inter inter, t_object_list *list, int n)
 {
 	int		result;
 	int		diffuse;
 	int		specular;
 	double	s_prod;
 	int		spot_number;
+	int		refl;
+	t_ray	ray_refl;
 
 	spot_number = count_light(inter.light_ray_list);
-	result = color_mult(inter.color, 0.2);
+	result = color_mult(inter.color, 0.2 * (1 - inter.ref_val));
 	while (inter.light_ray_list)
 	{
 		s_prod = vector_dot_product(inter.normal, inter.light_ray_list->light.dir);
 		if (s_prod < 0 && is_not_in_shadow(inter.pos, list,
 										   inter.light_ray_list->light))
 		{
-			diffuse = color_mult(inter.color, -0.8 * s_prod / spot_number);
+			diffuse = color_mult(inter.color, -0.8 * s_prod / spot_number * (1 - inter.ref_val));
 			s_prod = vector_dot_product(inter.refl, inter.light_ray_list->light.dir);
 			specular = (s_prod > 0 ? 0 :
 				color_mult(0xFFFFFF, 0.2 * pow(s_prod, 50)));
@@ -95,6 +97,14 @@ static int	get_color_inter(t_inter inter, t_object_list *list)
 			result = color_add(result, specular);
 		}
 		inter.light_ray_list = inter.light_ray_list->next;
+	}
+	if (n < 6 && inter.ref_val > 0)
+	{
+		ray_refl.point = inter.pos;
+		ray_refl.dir = inter.refl;
+		refl = get_color(ray_refl, g_scene, n + 1);
+		refl = color_mult(refl, inter.ref_val);
+		result = color_add(result, refl);
 	}
 	return (result);
 }
@@ -108,8 +118,6 @@ int			get_color(t_ray ray, t_scene sc, int n)
 	t_inter			inter;
 	t_object_list	*list;
 	int				color;
-/*	int				refl;
-	t_ray			ray_refl;*/
 	t_func_inter	tab_func_inter[5];
 
 	(void)n;
@@ -126,16 +134,7 @@ int			get_color(t_ray ray, t_scene sc, int n)
 		return (0);
 	else
 	{
-		color = get_color_inter(inter, sc.list);
-/*		if (n < 6 && inter.ref_val > 0)
-		{
-			ray_refl.point = inter.pos;
-			ray_refl.dir = inter.refl;
-			refl = get_color(ray_refl, sc, n + 1);
-			refl = color_mult(refl, inter.ref_val);
-			color = color_mult(color, 1 - inter.ref_val);
-			color = color_add(color, refl);
-		}*/
+		color = get_color_inter(inter, sc.list, n);
 		free(inter.dist);
 		free_light_ray_list(&inter);
 		return (color);

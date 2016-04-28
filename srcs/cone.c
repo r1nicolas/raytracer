@@ -68,7 +68,7 @@ void			cone_inter(t_inter *inter, void *obj, t_ray ray,
 	temp = ray;
 	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	dist = cone_distance(ray, cone);
-	if (dist >= 0 && (inter->dist == NULL || dist < *(inter->dist)))
+	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
@@ -100,7 +100,7 @@ int				cone_shadow(void *obj, t_ray ray, double light_dist)
 	cone = *((t_cone *)obj);
 	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	cone_dist = cone_distance(ray, cone);
-	if (cone_dist < 0 || cone_dist > light_dist - 0.001)
+	if (cone_dist < EPSILON || cone_dist > light_dist - EPSILON)
 		return (0);
 	return (1);
 }
