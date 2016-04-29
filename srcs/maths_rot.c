@@ -42,7 +42,6 @@ static double	**new_matrix(void)
 ** Apply a rotation matric to a vector.
 */
 
-
 t_vec			rotation_vector(double **mat, t_vec vector)
 {
 	t_vec		ret;

@@ -26,22 +26,13 @@ static int	color_mult(int color, double factor)
 
 	red = color / 0x10000;
 	red = red * factor;
-	if (red < 0)
-		red = 0;
-	if (red > 0xff)
-		red = 0xff;
+	red = TEST_COLOR(red);
 	green = (color / 0x100) % 0x100;
 	green = green * factor;
-	if (green < 0)
-		green = 0;
-	if (green > 0xff)
-		green = 0xff;
+	green = TEST_COLOR(green);
 	blue = color % 0x100;
 	blue = blue * factor;
-	if (blue < 0)
-		blue = 0;
-	if (blue > 0xff)
-		blue = 0xff;
+	blue = TEST_COLOR(blue);
 	return (red * 0x10000 + green * 0x100 + blue);
 }
 
@@ -56,56 +47,61 @@ static int	color_add(int color1, int color2)
 	int		blue;
 
 	red = color1 / 0x10000 + color2 / 0x10000;
-	if (red > 0xff)
-		red = 0xff;
+	red = TEST_COLOR(red);
 	green = (color1 / 0x100) % 0x100 + (color2 / 0x100) % 0x100;
-	if (green > 0xff)
-		green = 0xff;
+	green = TEST_COLOR(green);
 	blue = color1 % 0x100 + color2 % 0x100;
-	if (blue > 0xff)
-		blue = 0xff;
+	blue = TEST_COLOR(blue);
 	return (red * 0x10000 + green * 0x100 + blue);
+}
+
+/*
+** Return the color of refraction and reflection.
+** TO DO REFRACTION
+*/
+
+static int	get_color_reflection_refraction(t_inter inter, int n)
+{
+	int		result;
+
+	result = 0;
+	if (n < 6 && inter.refl_val > 0)
+	{
+		result = get_color((t_ray){inter.pos, inter.refl}, g_scene, n + 1);
+		result = color_mult(result, inter.refl_val);
+	}
+	return (result);
 }
 
 /*
 ** get the color at the intersection "inter" using the object list "list"
 */
 
-static int	get_color_inter(t_inter inter, t_object_list *list, int n)
+static int	get_color_inter(t_inter inter, int n)
 {
 	int		result;
-	int		diffuse;
-	int		specular;
-	double	s_prod;
+	int		temp;
+	double	dot;
 	int		spot_number;
-	int		refl;
-	t_ray	ray_refl;
 
-	spot_number = count_light(inter.light_ray_list);
-	result = color_mult(inter.color, 0.2 * (1 - inter.ref_val));
-	while (inter.light_ray_list)
+	spot_number = count_light(inter.light_list);
+	result = color_mult(inter.color, 0.2 * (1 - inter.refl_val));
+	while (inter.light_list)
 	{
-		s_prod = vector_dot_product(inter.normal, inter.light_ray_list->light.dir);
-		if (s_prod < 0 && is_not_in_shadow(inter.pos, list,
-										   inter.light_ray_list->light))
+		dot = vector_dot_product(inter.normal, inter.light_list->light.dir);
+		if (dot < 0 && is_not_in_shadow(inter.pos, inter.light_list->light))
 		{
-			diffuse = color_mult(inter.color, -0.8 * s_prod / spot_number * (1 - inter.ref_val));
-			s_prod = vector_dot_product(inter.refl, inter.light_ray_list->light.dir);
-			specular = (s_prod > 0 ? 0 :
-				color_mult(0xFFFFFF, 0.2 * pow(s_prod, 50)));
-			result = color_add(result, diffuse);
-			result = color_add(result, specular);
+			temp = color_mult(inter.color,
+							-0.8 * dot / spot_number * (1 - inter.refl_val));
+			result = color_add(result, temp);
+			dot = vector_dot_product(inter.refl, inter.light_list->light.dir);
+			temp = (dot > 0 ? 0 : color_mult(0xFFFFFF, 0.2 * pow(dot, 50)));
+			result = color_add(result, temp);
 		}
-		inter.light_ray_list = inter.light_ray_list->next;
+		inter.light_list = inter.light_list->next;
 	}
-	if (n < 6 && inter.ref_val > 0)
-	{
-		ray_refl.point = inter.pos;
-		ray_refl.dir = inter.refl;
-		refl = get_color(ray_refl, g_scene, n + 1);
-		refl = color_mult(refl, inter.ref_val);
-		result = color_add(result, refl);
-	}
+	temp = get_color_reflection_refraction(inter, n);
+	result = color_add(result, temp);
 	return (result);
 }
 
@@ -120,11 +116,10 @@ int			get_color(t_ray ray, t_scene sc, int n)
 	int				color;
 	t_func_inter	tab_func_inter[5];
 
-	(void)n;
 	create_tab_func_inter(tab_func_inter);
 	list = sc.list;
 	inter.dist = NULL;
-	inter.light_ray_list = NULL;
+	inter.light_list = NULL;
 	while (list)
 	{
 		tab_func_inter[list->obj](&inter, list->e, ray, sc.light);
@@ -134,7 +129,7 @@ int			get_color(t_ray ray, t_scene sc, int n)
 		return (0);
 	else
 	{
-		color = get_color_inter(inter, sc.list, n);
+		color = get_color_inter(inter, n);
 		free(inter.dist);
 		free_light_ray_list(&inter);
 		return (color);

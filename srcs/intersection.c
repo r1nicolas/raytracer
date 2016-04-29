@@ -20,8 +20,8 @@
 t_vec		calculate_position(t_ray ray, double dist)
 {
 	return (new_vector(ray.point.x + dist * ray.dir.x,
-					   ray.point.y + dist * ray.dir.y,
-					   ray.point.z + dist * ray.dir.z));
+					ray.point.y + dist * ray.dir.y,
+					ray.point.z + dist * ray.dir.z));
 }
 
 /*
@@ -56,16 +56,17 @@ void		change_frame(t_ray *ray, double **rot, t_vec trans)
 ** is.
 */
 
-int			is_not_in_shadow(t_vec inter, t_object_list *obj_list, t_ray light)
+int			is_not_in_shadow(t_vec pos, t_ray light)
 {
 	t_func_shadow	tab_func_shadow[5];
+	t_object_list	*obj_list;
 
 	create_tab_func_shadow(tab_func_shadow);
+	obj_list = g_scene.list;
 	while (obj_list)
 	{
-		if (tab_func_shadow[obj_list->obj](obj_list->e, light, 
-										   vector_distance(inter,
-										   				   light.point)))
+		if (tab_func_shadow[obj_list->obj](obj_list->e, light,
+										vector_distance(pos, light.point)))
 			return (0);
 		obj_list = obj_list->next;
 	}

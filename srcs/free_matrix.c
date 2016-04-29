@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 /*
-free the matrix 3-3 mat.
+** free the matrix 3-3 mat.
 */
 
 void	free_matrix(double **mat)

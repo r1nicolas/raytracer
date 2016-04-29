@@ -53,37 +53,35 @@ static t_vec	cone_normal(t_vec pos, t_cone cone)
 
 /*
 ** Fill the information of the inter structure if the object obj is closer than
-** the previous object or if it is the first object. 
+** the previous object or if it is the first object.
 */
 
 void			cone_inter(t_inter *inter, void *obj, t_ray ray,
-	t_light *light)
+							t_light *light)
 {
 	t_cone		cone;
 	double		dist;
-	t_vec		pos;
 	t_ray		temp;
 
 	cone = *((t_cone *)obj);
 	temp = ray;
 	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	dist = cone_distance(ray, cone);
-	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
+	if (dist > EPS && (inter->dist == NULL || dist < *(inter->dist) - EPS))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
 		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = calculate_position(ray, dist);
-		inter->normal = cone_normal(pos, cone);
+		inter->pos = calculate_position(ray, dist);
+		inter->normal = cone_normal(inter->pos, cone);
 		if (vector_dot_product(inter->normal, ray.dir) > 0)
 			inter->normal = vector_inverse(cone.apex);
-		op_inv(cone.apex, cone.rot, &(inter->normal), &pos);
+		op_inv(cone.apex, cone.rot, &(inter->normal), &(inter->pos));
 		inter->refl = calculate_reflection(temp, inter->normal);
 		inter->color = cone.color;
-		inter->pos = pos;
-		create_light_ray_list(inter, light, pos);
-		inter->ref_val = cone.refl;
+		create_light_ray_list(inter, light, inter->pos);
+		inter->refl_val = cone.refl;
 	}
 }
 
@@ -100,7 +98,7 @@ int				cone_shadow(void *obj, t_ray ray, double light_dist)
 	cone = *((t_cone *)obj);
 	change_frame(&ray, cone.inv, vector_inverse(cone.apex));
 	cone_dist = cone_distance(ray, cone);
-	if (cone_dist < EPSILON || cone_dist > light_dist - EPSILON)
+	if (cone_dist < EPS || cone_dist > light_dist - EPS)
 		return (0);
 	return (1);
 }

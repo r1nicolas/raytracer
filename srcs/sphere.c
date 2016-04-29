@@ -47,34 +47,33 @@ static t_vec	sphere_normal(t_vec pos, t_sphere sphere)
 
 /*
 ** Fill the information of the inter structure if the object obj is closer than
-** the previous object or if it is the first object. 
+** the previous object or if it is the first object.
 */
 
-void			sphere_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
+void			sphere_inter(t_inter *inter, void *obj, t_ray ray,
+								t_light *light)
 {
 	t_sphere	sphere;
 	double		dist;
-	t_vec		pos;
 
 	sphere = *((t_sphere *)obj);
 	ray.point = vector_add(ray.point, vector_inverse(sphere.center));
 	dist = sphere_distance(ray, sphere);
-	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
+	if (dist > EPS && (inter->dist == NULL || dist < *(inter->dist) - EPS))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
 		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = calculate_position(ray, dist);
-		inter->normal = sphere_normal(pos, sphere);
+		inter->pos = calculate_position(ray, dist);
+		inter->normal = sphere_normal(inter->pos, sphere);
 		if (vector_dot_product(inter->normal, ray.dir) > 0)
 			inter->normal = vector_inverse(inter->normal);
-		pos = vector_add(sphere.center, pos);
-		create_light_ray_list(inter, light, pos);
+		inter->pos = vector_add(sphere.center, inter->pos);
+		create_light_ray_list(inter, light, inter->pos);
 		inter->refl = calculate_reflection(ray, inter->normal);
 		inter->color = sphere.color;
-		inter->pos = pos;
-		inter->ref_val = sphere.refl;
+		inter->refl_val = sphere.refl;
 	}
 }
 
@@ -89,9 +88,9 @@ int				sphere_shadow(void *obj, t_ray ray, double light_dist)
 	double		sphere_dist;
 
 	sphere = *((t_sphere *)obj);
-	ray.point = vector_add(sphere.center, vector_inverse(ray.point));
+	ray.point = vector_add(ray.point, vector_inverse(sphere.center));
 	sphere_dist = sphere_distance(ray, sphere);
-	if (sphere_dist < EPSILON || sphere_dist > light_dist - EPSILON)
+	if (sphere_dist < EPS || sphere_dist > light_dist - EPS)
 		return (0);
 	return (1);
 }

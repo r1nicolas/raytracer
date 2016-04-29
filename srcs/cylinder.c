@@ -46,37 +46,35 @@ static t_vec	cylinder_normal(t_vec pos, t_cylinder cylinder)
 
 /*
 ** Fill the information of the inter structure if the object obj is closer than
-** the previous object or if it is the first object. 
+** the previous object or if it is the first object.
 */
 
 void			cylinder_inter(t_inter *inter, void *obj, t_ray ray,
-	t_light *light)
+								t_light *light)
 {
 	t_cylinder	cylinder;
 	double		dist;
-	t_vec		pos;
 	t_ray		temp;
 
 	cylinder = *((t_cylinder *)obj);
 	temp = ray;
 	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	dist = cylinder_distance(ray, cylinder);
-	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
+	if (dist > EPS && (inter->dist == NULL || dist < *(inter->dist) - EPS))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
 		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = calculate_position(ray, dist);
-		inter->normal = cylinder_normal(pos, cylinder);
+		inter->pos = calculate_position(ray, dist);
+		inter->normal = cylinder_normal(inter->pos, cylinder);
 		if (vector_dot_product(inter->normal, ray.dir) > 0)
-			inter->normal = vector_inverse(cylinder.trans);
-		op_inv(cylinder.trans, cylinder.rot, &(inter->normal), &pos);
+			inter->normal = vector_inverse(inter->normal);
+		op_inv(cylinder.trans, cylinder.rot, &(inter->normal), &(inter->pos));
 		inter->refl = calculate_reflection(temp, inter->normal);
 		inter->color = cylinder.color;
-		inter->pos = pos;
-		create_light_ray_list(inter, light, pos);
-		inter->ref_val = cylinder.refl;
+		create_light_ray_list(inter, light, inter->pos);
+		inter->refl_val = cylinder.refl;
 	}
 }
 
@@ -93,7 +91,7 @@ int				cylinder_shadow(void *obj, t_ray ray, double light_dist)
 	cylinder = *((t_cylinder *)obj);
 	change_frame(&ray, cylinder.inv, vector_inverse(cylinder.trans));
 	cylinder_dist = cylinder_distance(ray, cylinder);
-	if (cylinder_dist < EPSILON || cylinder_dist > light_dist - EPSILON)
+	if (cylinder_dist < EPS || cylinder_dist > light_dist - EPS)
 		return (0);
 	return (1);
 }

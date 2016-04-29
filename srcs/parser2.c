@@ -53,7 +53,6 @@ void			parse_plane(char **line)
 {
 	t_plane			*elem;
 	t_object_list	*e;
-	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 8, "plane");
@@ -63,12 +62,8 @@ void			parse_plane(char **line)
 	elem->c = atof(line[4]);
 	elem->d = atof(line[5]);
 	elem->refl = atof(line[6]) / 100;
-	elem->refl = (elem->refl > 1 ? 1: elem->refl);
-	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->refl = TEST_REF(elem->refl);
 	elem->color = (int)strtol(line[7], NULL, 16);
-	i = 0;
-	while (i < 8)
-		free(line[i++]);
 	e->obj = plane;
 	e->e = elem;
 	e->next = g_scene.list;
@@ -82,7 +77,6 @@ void			parse_plane(char **line)
 void			parse_sphere(char **line)
 {
 	t_sphere		*elem;
-	int				i;
 	t_object_list	*e;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
@@ -92,12 +86,8 @@ void			parse_sphere(char **line)
 								atof(line[4]));
 	elem->radius = atof(line[5]);
 	elem->refl = atof(line[6]) / 100;
-	elem->refl = (elem->refl > 1 ? 1: elem->refl);
-	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->refl = TEST_REF(elem->refl);
 	elem->color = strtol(line[7], NULL, 16);
-	i = 0;
-	while (i < 8)
-		free(line[i++]);
 	e->obj = sphere;
 	e->e = elem;
 	e->next = g_scene.list;
@@ -108,12 +98,10 @@ void			parse_sphere(char **line)
 ** Parse data that represent a cylinder.
 */
 
-
 void			parse_cylinder(char **line)
 {
 	t_cylinder		*elem;
 	t_object_list	*e;
-	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 11, "cylinder");
@@ -125,12 +113,8 @@ void			parse_cylinder(char **line)
 							atof(line[7]));
 	elem->radius = atof(line[8]);
 	elem->refl = atof(line[9]) / 100;
-	elem->refl = (elem->refl > 1 ? 1: elem->refl);
-	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->refl = TEST_REF(elem->refl);
 	elem->color = strtol(line[10], NULL, 16);
-	i = 0;
-	while (i < 11)
-		free(line[i++]);
 	e->obj = cylinder;
 	e->e = elem;
 	e->next = g_scene.list;
@@ -145,7 +129,6 @@ void			parse_cone(char **line)
 {
 	t_cone			*elem;
 	t_object_list	*e;
-	int				i;
 
 	e = (t_object_list*)malloc(sizeof(t_object_list));
 	test_object(line, 11, "cone");
@@ -157,12 +140,8 @@ void			parse_cone(char **line)
 							atof(line[7]));
 	elem->angle = atof(line[8]);
 	elem->refl = atof(line[9]) / 100;
-	elem->refl = (elem->refl > 1 ? 1: elem->refl);
-	elem->refl = (elem->refl < 0 ? 0: elem->refl);
+	elem->refl = TEST_REF(elem->refl);
 	elem->color = (int)strtol(line[10], NULL, 16);
-	i = 0;
-	while (i < 11)
-		free(line[i++]);
 	e->obj = cone;
 	e->e = elem;
 	e->next = g_scene.list;

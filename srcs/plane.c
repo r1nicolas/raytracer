@@ -45,32 +45,31 @@ static t_vec	plane_normal(t_vec pos, t_plane plane)
 
 /*
 ** Fill the information of the inter structure if the object obj is closer than
-** the previous object or if it is the first object. 
+** the previous object or if it is the first object.
 */
 
-void			plane_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
+void			plane_inter(t_inter *inter, void *obj, t_ray ray,
+							t_light *light)
 {
 	t_plane		plane;
 	double		dist;
-	t_vec		pos;
 
 	plane = *((t_plane *)obj);
 	dist = plane_distance(ray, plane);
-	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
+	if (dist > EPS && (inter->dist == NULL || dist < *(inter->dist) - EPS))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
 		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = calculate_position(ray, dist);
+		inter->pos = calculate_position(ray, dist);
 		inter->normal = plane_normal(inter->pos, plane);
 		if (vector_dot_product(inter->normal, ray.dir) > 0)
 			inter->normal = vector_inverse(inter->normal);
-		create_light_ray_list(inter, light, pos);
+		create_light_ray_list(inter, light, inter->pos);
 		inter->refl = calculate_reflection(ray, inter->normal);
 		inter->color = plane.color;
-		inter->pos = pos;
-		inter->ref_val = plane.refl;
+		inter->refl_val = plane.refl;
 	}
 }
 
@@ -86,7 +85,7 @@ int				plane_shadow(void *obj, t_ray ray, double light_dist)
 
 	plane = *((t_plane *)obj);
 	plane_dist = plane_distance(ray, plane);
-	if (plane_dist < EPSILON || plane_dist > light_dist - EPSILON)
+	if (plane_dist < EPS || plane_dist > light_dist - EPS)
 		return (0);
 	return (1);
 }

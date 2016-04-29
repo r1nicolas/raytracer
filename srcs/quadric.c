@@ -60,32 +60,31 @@ static t_vec	quadric_normal(t_vec pos, t_quad quad)
 
 /*
 ** Fill the information of the inter structure if the object obj is closer than
-** the previous object or if it is the first object. 
+** the previous object or if it is the first object.
 */
 
-void			quadric_inter(t_inter *inter, void *obj, t_ray ray, t_light *light)
+void			quadric_inter(t_inter *inter, void *obj, t_ray ray,
+								t_light *light)
 {
 	t_quad		quad;
 	double		dist;
-	t_vec		pos;
 
 	quad = *((t_quad *)obj);
 	dist = quadric_distance(ray, quad);
-	if (dist > EPSILON && (inter->dist == NULL || dist < *(inter->dist) - EPSILON))
+	if (dist > EPS && (inter->dist == NULL || dist < *(inter->dist) - EPS))
 	{
 		if (inter->dist == NULL)
 			inter->dist = malloc(sizeof(double));
 		free_light_ray_list(inter);
 		*(inter->dist) = dist;
-		pos = calculate_position(ray, dist);
-		inter->normal = quadric_normal(pos, quad);
+		inter->pos = calculate_position(ray, dist);
+		inter->normal = quadric_normal(inter->pos, quad);
 		if (vector_dot_product(inter->normal, ray.dir) > 0)
 			inter->normal = vector_scalar_mult(inter->normal, -1);
 		inter->refl = calculate_reflection(ray, inter->normal);
 		inter->color = quad.color;
-		inter->pos = pos;
-		create_light_ray_list(inter, light, pos);
-		inter->ref_val = quad.refl;
+		create_light_ray_list(inter, light, inter->pos);
+		inter->refl_val = quad.refl;
 	}
 }
 
@@ -101,7 +100,7 @@ int				quadric_shadow(void *obj, t_ray ray, double light_dist)
 
 	quad = *((t_quad *)obj);
 	quad_dist = quadric_distance(ray, quad);
-	if (quad_dist < EPSILON || quad_dist > light_dist - EPSILON)
+	if (quad_dist < EPS || quad_dist > light_dist - EPS)
 		return (0);
 	return (1);
 }

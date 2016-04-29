@@ -101,12 +101,12 @@ typedef struct				s_ray_list
 typedef struct				s_inter
 {
 	double					*dist;
-	t_ray_list				*light_ray_list;
+	t_ray_list				*light_list;
 	t_vec					normal;
 	t_vec					refl;
 	t_vec					pos;
 	int						color;
-	double					ref_val;
+	double					refl_val;
 }							t_inter;
 
 typedef struct				s_light

@@ -100,3 +100,16 @@ char		**strsplit(char const *s, char c)
 	sub_fill_it(s, result, c, count);
 	return (result);
 }
+
+void		free_split(char **split)
+{
+	int		i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}

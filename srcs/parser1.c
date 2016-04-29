@@ -100,7 +100,7 @@ static int		open_file(char *path)
 		put_error("directory is not a valid scene.\n");
 	if ((fd = open(path, O_RDONLY)) == -1)
 		put_error("can't access to the file.\n");
-	return(fd);
+	return (fd);
 }
 
 /*
@@ -126,7 +126,7 @@ void			create_scene(char *path)
 			{
 				is_valid(split);
 				parse_line(split);
-				free(split);
+				free_split(split);
 			}
 			free(line);
 		}

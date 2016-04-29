@@ -88,7 +88,8 @@ static ssize_t		add_line(char **line, ssize_t *size, t_buff *buff)
 }
 
 /*
-** Put the next line of the file designated by fd in the Cstring pointed by line.
+** Put the next line of the file designated by fd in the Cstring pointed by
+** line.
 ** Return 1 if it worked, 0 at the end the file and -1 in case of error.
 */
 
