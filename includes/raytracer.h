@@ -14,7 +14,6 @@
 # define RAYTRACER_H
 
 # define BUFF_SIZE 512
-# define DELIM_CHAR '\n'
 
 # include "structures.h"
 
@@ -126,6 +125,12 @@ double	vector_norm(t_vec a);
 t_vec	vector_inverse(t_vec v);
 
 /*
+** memalloc.c
+*/
+
+void	*memalloc(size_t size);
+
+/*
 ** parser1.c
 */
 
@@ -179,11 +184,23 @@ void	sphere_inter(t_inter *inter, void *obj, t_ray ray, t_light *light);
 int		sphere_shadow(void *obj, t_ray ray, double light_dist);
 
 /*
+** strjoin.c
+*/
+
+char	*strjoin(char const *s1, char const *s2);
+
+/*
 ** strsplit.c
 */
 
 char	**strsplit(char *line, char c);
 void	free_split(char **split);
+
+/*
+** strsub.c
+*/
+
+char	*strsub(char const *s, unsigned int start, size_t len);
 
 /*
 ** tab_func.c

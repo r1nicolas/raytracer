@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/04/28 16:54:16 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/05/02 20:45:22 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -42,7 +42,10 @@ SRC =	main.c \
 		strsplit.c \
 		get_next_line.c \
 		is_all_num.c \
-		free_matrix.c
+		free_matrix.c \
+		memalloc.c \
+		strjoin.c \
+		strsub.c
 #		res_equ_thrd.c 
 
 IFLAGS = -I includes -I ~/.brew/include/SDL2

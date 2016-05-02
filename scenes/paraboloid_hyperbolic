@@ -1,0 +1,7 @@
+
+> camera 0 16 16 0 -4 -4 16 0
+> quadric 1 -1 0 0 0 0 0 0 -1 0 0 FF00FF
+> sphere 0 0 4 1 70 FFFFFF
+> spot 4 4 2
+> spot -4 4 2
+> spot 0 4 6

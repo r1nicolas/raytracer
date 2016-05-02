@@ -12,112 +12,77 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 #include <raytracer.h>
 
-/*
-** Return the buffer of corresponding to the file descriptor.
-*/
-
-static t_buff		*get_buff(t_buff **head_buff, int const fd)
+char	*free_join(char *str1, char *str2)
 {
-	t_buff			*tmp;
+	char	*ret;
 
-	tmp = *head_buff;
-	while (tmp && tmp->fd != fd)
-		tmp = tmp->next;
-	if (tmp == NULL)
+	ret = strjoin(str1, str2);
+	free(str1);
+	free(str2);
+	return (ret);
+}
+
+int		cut(char **buf, char **line)
+{
+	char	*tmp1;
+	char	*tmp2;
+	char	*end;
+
+	if ((end = strchr(*buf, '\n')))
 	{
-		if ((tmp = (t_buff*)malloc(sizeof(*tmp))) == NULL)
-			return (NULL);
-		tmp->fd = fd;
-		tmp->size = 0;
-		tmp->i = -1;
-		tmp->next = *head_buff;
-		*head_buff = tmp;
-	}
-	return (tmp);
-}
-
-/*
-** Remove a buffer from the list.
-*/
-
-static void			del_buff(t_buff **head_buff, t_buff *buff)
-{
-	t_buff			*tmp;
-
-	tmp = *head_buff;
-	if (*head_buff && buff == *head_buff)
-		*head_buff = (*head_buff)->next;
-	else
-		while (tmp && tmp->next && tmp->next != buff)
-			tmp = tmp->next;
-	if (tmp->next == buff && buff)
-		tmp->next = buff->next;
-	free(buff);
-}
-
-/*
-** Allocate memory to line and fill it from the corresponding buffer.
-** Return 1 if the line is over and 0 if not.
-*/
-
-static ssize_t		add_line(char **line, ssize_t *size, t_buff *buff)
-{
-	char			*tmp;
-	ssize_t			i;
-
-	i = buff->i + 1;
-	while (i < buff->size && buff->buff[i] != DELIM_CHAR)
-		++i;
-	if ((tmp = (char*)malloc(sizeof(*tmp) * (*size + i - buff->i))) == NULL)
-		return (-1);
-	i = -1;
-	while (++i < *size)
-		tmp[i] = (*line)[i];
-	while (++(buff->i) < buff->size && buff->buff[buff->i] != DELIM_CHAR)
-		tmp[i++] = buff->buff[buff->i];
-	tmp[i] = 0;
-	if (*line)
-		free(*line);
-	*line = tmp;
-	*size = i;
-	if (buff->i < buff->size && buff->buff[buff->i] == DELIM_CHAR)
+		tmp1 = strsub(*buf, 0, (size_t)(end - *buf));
+		*line = free_join(*line, tmp1);
+		tmp2 = strsub(*buf, (size_t)(end - *buf) + 1, strlen(*buf));
+		free(*buf);
+		*buf = tmp2;
 		return (1);
+	}
 	return (0);
 }
 
-/*
-** Put the next line of the file designated by fd in the Cstring pointed by
-** line.
-** Return 1 if it worked, 0 at the end the file and -1 in case of error.
-*/
-
-int					get_next_line(int const fd, char **line)
+int		alloc_buf(int const fd, char **buf, char **line)
 {
-	static t_buff	*head_buff = NULL;
-	ssize_t			size;
-	ssize_t			ret;
-	t_buff			*buff;
+	int	ret;
 
-	*line = NULL;
-	if ((buff = get_buff(&head_buff, fd)) == NULL)
-		return (-1);
-	size = 0;
-	while ((ret = add_line(line, &size, buff)) == 0)
+	ret = BUFF_SIZE;
+	if (*buf == NULL)
 	{
-		if ((ret = read(buff->fd, buff->buff, BUFF_SIZE)) <= 0)
-		{
-			if (ret == 0)
-			{
-				free(*line);
-				*line = NULL;
-			}
-			del_buff(&head_buff, buff);
-			return (ret);
-		}
-		buff->size = ret;
-		buff->i = -1;
+		*buf = (char *)memalloc(BUFF_SIZE + 1);
+		ret = read(fd, *buf, BUFF_SIZE);
+		if (ret < 0)
+			free(*line);
 	}
 	return (ret);
+}
+
+int		get_next_line(int const fd, char **line)
+{
+	static char	*buf = NULL;
+	int			ret;
+
+	if (line == NULL)
+		return (-1);
+	*line = (char *)memalloc(1);
+	while (42)
+	{
+		if ((ret = alloc_buf(fd, &buf, line)) <= 0)
+			return (ret);
+		if (cut(&buf, line))
+			return (1);
+		else if (ret < BUFF_SIZE)
+		{
+			*line = free_join(*line, buf);
+			buf = NULL;
+			return (1);
+		}
+		else
+		{
+			*line = free_join(*line, buf);
+			buf = NULL;
+		}
+	}
+	return (0);
 }

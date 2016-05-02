@@ -42,6 +42,7 @@ t_sdl		new_sdl_data(void)
 {
 	t_sdl			sdl_data;
 
+	SDL_Init(SDL_INIT_VIDEO);
 	sdl_data.window = SDL_CreateWindow("Raytracer", SDL_WINDOWPOS_UNDEFINED,
 										SDL_WINDOWPOS_UNDEFINED, WINCOL,
 										WINROW, SDL_WINDOW_OPENGL);
@@ -77,7 +78,6 @@ int			main(int ac, char **av)
 	if (ac != 2)
 		put_error("usage: ./raytracer scene\n");
 	create_scene(av[1]);
-	SDL_Init(SDL_INIT_VIDEO);
 	sdl_data = new_sdl_data();
 	pixels = image_generation();
 	SDL_UpdateTexture(sdl_data.texture, NULL, pixels, WINCOL * sizeof(Uint32));

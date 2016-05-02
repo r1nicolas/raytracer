@@ -142,15 +142,6 @@ typedef struct				s_quad
 	double					refl;
 }							t_quad;
 
-typedef struct				s_buff
-{
-	int						fd;
-	ssize_t					size;
-	ssize_t					i;
-	char					buff[BUFF_SIZE];
-	struct s_buff			*next;
-}							t_buff;
-
 typedef struct				s_sdl
 {
 	SDL_Window				*window;
