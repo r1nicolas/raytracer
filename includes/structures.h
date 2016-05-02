@@ -14,6 +14,7 @@
 # define STRUCTURES_H
 
 # include <unistd.h>
+# include <SDL.h>
 
 typedef struct				s_vec
 {
@@ -149,6 +150,13 @@ typedef struct				s_buff
 	char					buff[BUFF_SIZE];
 	struct s_buff			*next;
 }							t_buff;
+
+typedef struct				s_sdl
+{
+	SDL_Window				*window;
+	SDL_Renderer			*renderer;
+	SDL_Texture				*texture;
+}							t_sdl;
 
 typedef int					(*t_func_shadow)(void *e, t_ray ray, double dist);
 typedef void				(*t_func_inter)(t_inter *inter, void *e, t_ray ray,

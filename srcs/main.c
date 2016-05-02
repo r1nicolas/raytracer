@@ -15,37 +15,14 @@
 #include <stdlib.h>
 #include <SDL.h>
 
-int		main(int ac, char **av)
+static int	*image_generation(void)
 {
-	SDL_Window		*window;
-	int				quit;
-	SDL_Renderer	*renderer;
-	SDL_Texture		*texture;
-	SDL_Event		event;
 	int				*pixels;
 	int				i;
 	int				j;
 	t_ray			ray;
 
-	if (ac != 2)
-		put_error("usage: ./raytracer scene\n");
 	pixels = (int *)malloc(WINROW * WINCOL * sizeof(int));
-	create_scene(av[1]);
-	SDL_Init(SDL_INIT_VIDEO);
-	if (!(window = SDL_CreateWindow("Raytracer",
-									SDL_WINDOWPOS_UNDEFINED,
-									SDL_WINDOWPOS_UNDEFINED,
-									WINCOL,
-									WINROW,
-									SDL_WINDOW_OPENGL)))
-		put_error(SDL_GetError());
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	texture = SDL_CreateTexture(renderer,
-								SDL_PIXELFORMAT_ARGB8888,
-								SDL_TEXTUREACCESS_STATIC,
-								WINCOL,
-								WINROW);
-	quit = 0;
 	i = 0;
 	while (i < WINCOL)
 	{
@@ -58,10 +35,56 @@ int		main(int ac, char **av)
 		}
 		i++;
 	}
-	SDL_UpdateTexture(texture, NULL, pixels, WINCOL * sizeof(Uint32));
-	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_RenderPresent(renderer);
+	return (pixels);
+}
+
+t_sdl		new_sdl_data(void)
+{
+	t_sdl			sdl_data;
+
+	sdl_data.window = SDL_CreateWindow("Raytracer", SDL_WINDOWPOS_UNDEFINED,
+										SDL_WINDOWPOS_UNDEFINED, WINCOL,
+										WINROW, SDL_WINDOW_OPENGL);
+	if (!sdl_data.window)
+		put_error(SDL_GetError());
+	sdl_data.renderer = SDL_CreateRenderer(sdl_data.window, -1,
+											SDL_RENDERER_ACCELERATED);
+	if (!sdl_data.renderer)
+		put_error(SDL_GetError());
+	sdl_data.texture = SDL_CreateTexture(sdl_data.renderer,
+											SDL_PIXELFORMAT_ARGB8888,
+											SDL_TEXTUREACCESS_STATIC, WINCOL,
+											WINROW);
+	if (!sdl_data.texture)
+		put_error(SDL_GetError());
+	return (sdl_data);
+}
+
+void		delete_sdl_data(t_sdl sdl_data)
+{
+	SDL_DestroyTexture(sdl_data.texture);
+	SDL_DestroyRenderer(sdl_data.renderer);
+	SDL_DestroyWindow(sdl_data.window);
+}
+
+int			main(int ac, char **av)
+{
+	t_sdl			sdl_data;
+	int				quit;
+	SDL_Event		event;
+	int				*pixels;
+
+	if (ac != 2)
+		put_error("usage: ./raytracer scene\n");
+	create_scene(av[1]);
+	SDL_Init(SDL_INIT_VIDEO);
+	sdl_data = new_sdl_data();
+	pixels = image_generation();
+	SDL_UpdateTexture(sdl_data.texture, NULL, pixels, WINCOL * sizeof(Uint32));
+	SDL_RenderClear(sdl_data.renderer);
+	SDL_RenderCopy(sdl_data.renderer, sdl_data.texture, NULL, NULL);
+	SDL_RenderPresent(sdl_data.renderer);
+	quit = 0;
 	while (!quit)
 	{
 		SDL_WaitEvent(&event);
@@ -69,9 +92,7 @@ int		main(int ac, char **av)
 			quit = 1;
 	}
 	free(pixels);
-	SDL_DestroyTexture(texture);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
+	delete_sdl_data(sdl_data);
 	SDL_Quit();
 	return (0);
 }
