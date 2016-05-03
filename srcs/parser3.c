@@ -6,7 +6,7 @@
 /*   By: hmichals <hmichals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 20:32:31 by hmichals          #+#    #+#             */
-/*   Updated: 2016/04/21 18:00:18 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/05/03 18:29:47 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		test_camera_spot(char **line, int size, char *name)
 		}
 		i++;
 	}
-	if (line[i] != NULL && line[i + 1] != NULL)
+	if (i < size || line[i] != NULL)
 	{
 		write(2, name, strlen(name));
 		put_error(" : wrong number of arguments\n");
@@ -50,7 +50,7 @@ void			parse_camera(char **line)
 
 	test_camera_spot(line, 10, "camera");
 	pos = new_vector(atof(line[2]), atof(line[3]), atof(line[4]));
-	u = new_vector_unit(atof(line[5]), atof(line[6]), atof(line[7]));
+	u = new_vector(atof(line[5]), atof(line[6]), atof(line[7]));
 	g_scene.cam = new_cam(pos, u, atof(line[8]), atof(line[9]));
 }
 

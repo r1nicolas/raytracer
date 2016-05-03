@@ -6,7 +6,7 @@
 /*   By: tlepetit <tlepetit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 16:20:12 by tlepetit          #+#    #+#             */
-/*   Updated: 2016/04/18 17:56:15 by rnicolas         ###   ########.fr       */
+/*   Updated: 2016/05/03 18:32:43 by rnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ t_ray		new_ray(int x, int y, t_cam cam)
 
 	height = cam.size / (double)WINROW;
 	width = cam.size / (double)WINCOL * (4.0 / 3.0);
-	ray.dir = cam.dir;
 	ray.point = cam.pos;
-	ray.point.x = ray.point.x + width * cam.right.x * (x - WINCOL / 2)
-		+ height * cam.down.x * (y - WINROW / 2);
-	ray.point.y = ray.point.y + width * cam.right.y * (x - WINCOL / 2)
-		+ height * cam.down.y * (y - WINROW / 2);
-	ray.point.z = ray.point.z + width * cam.right.z * (x - WINCOL / 2)
-		+ height * cam.down.z * (y - WINROW / 2);
+	ray.dir.x = cam.pos.x + width * cam.right.x * (x - WINCOL / 2)
+		+ height * cam.down.x * (y - WINROW / 2) + cam.dir.x;
+	ray.dir.y = cam.pos.y + width * cam.right.y * (x - WINCOL / 2)
+		+ height * cam.down.y * (y - WINROW / 2) + cam.dir.y;
+	ray.dir.z = cam.pos.z + width * cam.right.z * (x - WINCOL / 2)
+		+ height * cam.down.z * (y - WINROW / 2) + cam.dir.z;
+	ray.dir = vector_add(ray.dir, vector_inverse(ray.point));
+	ray.dir = vector_scalar_mult(ray.dir, 1 / vector_norm(ray.dir));
 	return (ray);
 }
