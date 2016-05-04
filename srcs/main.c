@@ -15,14 +15,15 @@
 #include <stdlib.h>
 #include <SDL.h>
 
-static int	*image_generation(void)
+static void	image_generation(t_sdl sdl_data)
 {
-	int				*pixels;
+	static int		*pixels = NULL;
 	int				i;
 	int				j;
 	t_ray			ray;
 
-	pixels = (int *)malloc(WINROW * WINCOL * sizeof(int));
+	if (pixels == NULL)
+		pixels = (int *)malloc(WINROW * WINCOL * sizeof(int));
 	i = 0;
 	while (i < WINCOL)
 	{
@@ -35,7 +36,10 @@ static int	*image_generation(void)
 		}
 		i++;
 	}
-	return (pixels);
+	SDL_UpdateTexture(sdl_data.texture, NULL, pixels, WINCOL * sizeof(Uint32));
+	SDL_RenderClear(sdl_data.renderer);
+	SDL_RenderCopy(sdl_data.renderer, sdl_data.texture, NULL, NULL);
+	SDL_RenderPresent(sdl_data.renderer);
 }
 
 t_sdl		new_sdl_data(void)
@@ -73,25 +77,21 @@ int			main(int ac, char **av)
 	t_sdl			sdl_data;
 	int				quit;
 	SDL_Event		event;
-	int				*pixels;
 
 	if (ac != 2)
 		put_error("usage: ./raytracer scene\n");
 	create_scene(av[1]);
 	sdl_data = new_sdl_data();
-	pixels = image_generation();
-	SDL_UpdateTexture(sdl_data.texture, NULL, pixels, WINCOL * sizeof(Uint32));
-	SDL_RenderClear(sdl_data.renderer);
-	SDL_RenderCopy(sdl_data.renderer, sdl_data.texture, NULL, NULL);
-	SDL_RenderPresent(sdl_data.renderer);
 	quit = 0;
+	image_generation(sdl_data);
 	while (!quit)
 	{
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT)
 			quit = 1;
+		else if (camera_move(event))
+			image_generation(sdl_data);
 	}
-	free(pixels);
 	delete_sdl_data(sdl_data);
 	SDL_Quit();
 	return (0);

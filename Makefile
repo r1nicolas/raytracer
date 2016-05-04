@@ -6,7 +6,7 @@
 #    By: rnicolas <rnicolas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/25 17:22:42 by rnicolas          #+#    #+#              #
-#    Updated: 2016/05/02 20:45:22 by rnicolas         ###   ########.fr        #
+#    Updated: 2016/05/04 18:44:45 by rnicolas         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -45,7 +45,8 @@ SRC =	main.c \
 		free_matrix.c \
 		memalloc.c \
 		strjoin.c \
-		strsub.c
+		strsub.c \
+		camera_move.c
 #		res_equ_thrd.c 
 
 IFLAGS = -I includes -I ~/.brew/include/SDL2

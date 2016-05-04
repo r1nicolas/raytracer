@@ -36,6 +36,12 @@ t_cam	new_cam(t_vec pos, t_vec dir, double size, double rot);
 t_ray	new_ray(int x, int y, t_cam cam);
 
 /*
+** camera_move.c
+*/
+
+int		camera_move(SDL_Event event);
+
+/*
 ** color.c
 */
 
