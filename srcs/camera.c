@@ -53,19 +53,27 @@ t_cam		new_cam(t_vec pos, t_vec dir, double size, double rot)
 t_ray		new_ray(int x, int y, t_cam cam)
 {
 	t_ray	ray;
-	double	height;
-	double	width;
+	double	angle_x;
+	double	angle_y;
+	double	**mat;
+//	t_vec	right_tmp;
 
-	height = cam.size / (double)WINROW;
-	width = cam.size / (double)WINCOL * (4.0 / 3.0);
 	ray.point = cam.pos;
-	ray.dir.x = cam.pos.x + width * cam.right.x * (x - WINCOL / 2)
+	angle_x = (((double)x / (double)WINCOL) - 0.5) * 1.f;
+	angle_y = -(((double)y / (double)WINROW) - 0.5) * 0.75;
+	mat = create_rotation_matrix(angle_x, cam.down);
+	ray.dir = rotation_vector(mat, cam.dir);
+//	right_tmp = rotation_vector(mat, cam.right);
+	mat = create_rotation_matrix(angle_y, cam.right);
+	ray.dir = rotation_vector(mat, ray.dir);
+
+/*	ray.dir.x = width * cam.right.x * (x - WINCOL / 2)
 		+ height * cam.down.x * (y - WINROW / 2) + cam.dir.x;
-	ray.dir.y = cam.pos.y + width * cam.right.y * (x - WINCOL / 2)
+	ray.dir.y = width * cam.right.y * (x - WINCOL / 2)
 		+ height * cam.down.y * (y - WINROW / 2) + cam.dir.y;
-	ray.dir.z = cam.pos.z + width * cam.right.z * (x - WINCOL / 2)
+	ray.dir.z = width * cam.right.z * (x - WINCOL / 2)
 		+ height * cam.down.z * (y - WINROW / 2) + cam.dir.z;
-	ray.dir = vector_add(ray.dir, vector_inverse(ray.point));
-	ray.dir = vector_scalar_mult(ray.dir, 1 / vector_norm(ray.dir));
+	ray.dir = vector_scalar_mult(ray.dir, 1 / vector_norm(ray.dir));*/
+
 	return (ray);
 }

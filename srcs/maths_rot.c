@@ -53,10 +53,10 @@ t_vec			rotation_vector(double **mat, t_vec vector)
 }
 
 /*
-** Create the rotation matrix of angle angle around the vector ort.
+** Create the rotation matrix of angle angle around the vector axe.
 */
 
-double			**create_rotation_matrix(double angle, t_vec ort)
+double			**create_rotation_matrix(double angle, t_vec axe)
 {
 	double		**matrix;
 	double		s;
@@ -67,15 +67,15 @@ double			**create_rotation_matrix(double angle, t_vec ort)
 	{
 		c = cos(angle);
 		s = sin(angle);
-		matrix[0][0] = ort.x * ort.x + (1 - ort.x * ort.x) * c;
-		matrix[0][1] = ort.x * ort.y * (1 - c) - ort.z * s;
-		matrix[0][2] = ort.z * ort.x * (1 - c) + ort.y * s;
-		matrix[1][0] = ort.x * ort.y * (1 - c) + ort.z * s;
-		matrix[1][1] = ort.y * ort.y + (1 - ort.y * ort.y) * c;
-		matrix[1][2] = ort.y * ort.z * (1 - c) - ort.x * s;
-		matrix[2][0] = ort.z * ort.x * (1 - c) - ort.y * s;
-		matrix[2][1] = ort.y * ort.z * (1 - c) + ort.x * s;
-		matrix[2][2] = ort.z * ort.z + (1 - ort.z * ort.z) * c;
+		matrix[0][0] = axe.x * axe.x + (1 - axe.x * axe.x) * c;
+		matrix[0][1] = axe.x * axe.y * (1 - c) - axe.z * s;
+		matrix[0][2] = axe.z * axe.x * (1 - c) + axe.y * s;
+		matrix[1][0] = axe.x * axe.y * (1 - c) + axe.z * s;
+		matrix[1][1] = axe.y * axe.y + (1 - axe.y * axe.y) * c;
+		matrix[1][2] = axe.y * axe.z * (1 - c) - axe.x * s;
+		matrix[2][0] = axe.z * axe.x * (1 - c) - axe.y * s;
+		matrix[2][1] = axe.y * axe.z * (1 - c) + axe.x * s;
+		matrix[2][2] = axe.z * axe.z + (1 - axe.z * axe.z) * c;
 	}
 	return (matrix);
 }
